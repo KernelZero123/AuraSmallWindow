@@ -1,6 +1,6 @@
 # Aura Small Window：AOSP 源码移植包
 
-代码基于 GPT-6-Astra 编写
+代码基于 GPT-6.1 Sol 编写
 已经过 CoolApk@Fish_Neko 的同意并开源
 
 导出日期：2026-10-12。来自 Aura 当前已集成的小窗实现，基于 Android 16 / LineageOS 23.2 trunk_staging。准确仓库提交和远端见 `baseline.json`。这是跨仓库源码移植包，不是 APK 插件、KSU 模块或可以直接刷入的镜像。
