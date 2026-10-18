@@ -1,0 +1,848 @@
+[
+  {
+    "path": "frameworks/base/libs/WindowManager/Shell/src/com/android/wm/shell/freeform/FreeformTaskListener.java",
+    "repository": "frameworks/base",
+    "patch_group": "01-frameworks-base-small-window",
+    "new_file": false,
+    "sha256": "02fc2d314ca5fe0c8c02710c10bda5dd80d7074579cd73af0258db9f113979d6",
+    "canonical_sha256": "828ee08d437e155d5ff0a4790f70e4e322baac6290d25b0cece42afcca00289a",
+    "export_transform": null
+  },
+  {
+    "path": "frameworks/base/libs/WindowManager/Shell/src/com/android/wm/shell/windowdecor/CaptionWindowDecoration.java",
+    "repository": "frameworks/base",
+    "patch_group": "01-frameworks-base-small-window",
+    "new_file": false,
+    "sha256": "5a18b154544a2e1446ef082e6377c74b0ad378f9d26489e87e8c883ded7d9006",
+    "canonical_sha256": "5a18b154544a2e1446ef082e6377c74b0ad378f9d26489e87e8c883ded7d9006",
+    "export_transform": null
+  },
+  {
+    "path": "frameworks/base/libs/WindowManager/Shell/src/com/android/wm/shell/windowdecor/TaskOperations.java",
+    "repository": "frameworks/base",
+    "patch_group": "01-frameworks-base-small-window",
+    "new_file": false,
+    "sha256": "20b713369305fa795f98b8ff1d65ec8c384341de4f13156d14fdc6a8c3e681c5",
+    "canonical_sha256": "ab8f209d315ff7ca138a032b7ee658e18deef1137b77515876b6fc11d635bedb",
+    "export_transform": null
+  },
+  {
+    "path": "packages/apps/Launcher3/quickstep/res/values/aura_small_window.xml",
+    "repository": "packages/apps/Launcher3",
+    "patch_group": "05-launcher3-small-window",
+    "new_file": true,
+    "sha256": "8b53e1c8e1532673ca61ab5927fbb2a626e13f05c041923ef90aff07f22aed65",
+    "canonical_sha256": "8db96d181f8d7621103784b8788ebc62747adbc4c4d329dbb55f8be2f4ef0d5d",
+    "export_transform": null
+  },
+  {
+    "path": "packages/apps/Launcher3/quickstep/res/values-zh-rCN/aura_small_window.xml",
+    "repository": "packages/apps/Launcher3",
+    "patch_group": "05-launcher3-small-window",
+    "new_file": true,
+    "sha256": "d0d5d9ef807ebff46f8cfb348e0b41c6907c7909a6ef6a40c2843e9b89cfcffb",
+    "canonical_sha256": "ff86c1eb335c8b4f4e7fde8cd7884c2207979a71df308a704de93fc9d9a12314",
+    "export_transform": null
+  },
+  {
+    "path": "packages/apps/Launcher3/quickstep/src/com/android/quickstep/TaskShortcutFactory.java",
+    "repository": "packages/apps/Launcher3",
+    "patch_group": "05-launcher3-small-window",
+    "new_file": false,
+    "sha256": "86afdb3de4ebf6c3760e58b3ce83bff34e6fc0553c1925a96844a540119916e3",
+    "canonical_sha256": "2265e7c4937280549443c904207fa9b41323c68d72b82fa7663b2e4dfe4d37a2",
+    "export_transform": null
+  },
+  {
+    "path": "frameworks/base/services/core/java/com/android/server/wm/Task.java",
+    "repository": "frameworks/base",
+    "patch_group": "01-frameworks-base-small-window",
+    "new_file": false,
+    "sha256": "9102344847972de42a814ed01d1c3f47b37aa6ef882584762f30d24711282c1f",
+    "canonical_sha256": "5867be8801b62cbb74ae4327f48ae21cf62c2f9c058a1ac3a18c8e32250e772f",
+    "export_transform": null
+  },
+  {
+    "path": "frameworks/base/services/core/java/com/android/server/wm/Transition.java",
+    "repository": "frameworks/base",
+    "patch_group": "01-frameworks-base-small-window",
+    "new_file": false,
+    "sha256": "bc34c5b39737a671bd3c177f17855b6629087aafcdbab7bee9a27ee46ddd485b",
+    "canonical_sha256": "bc34c5b39737a671bd3c177f17855b6629087aafcdbab7bee9a27ee46ddd485b",
+    "export_transform": null
+  },
+  {
+    "path": "frameworks/base/services/core/java/com/android/server/wm/WindowState.java",
+    "repository": "frameworks/base",
+    "patch_group": "01-frameworks-base-small-window",
+    "new_file": false,
+    "sha256": "c4557d42d8019e796d405f2549908cef6c85c25db12b09726de3f4073fab75f5",
+    "canonical_sha256": "c4557d42d8019e796d405f2549908cef6c85c25db12b09726de3f4073fab75f5",
+    "export_transform": null
+  },
+  {
+    "path": "frameworks/base/services/core/java/com/android/server/wm/AuraSmallWindowInsets.java",
+    "repository": "frameworks/base",
+    "patch_group": "01-frameworks-base-small-window",
+    "new_file": true,
+    "sha256": "e976c1326600822bff94ac31b8c1901036a67e5d54fddce589b8a1df183e2d09",
+    "canonical_sha256": "e976c1326600822bff94ac31b8c1901036a67e5d54fddce589b8a1df183e2d09",
+    "export_transform": null
+  },
+  {
+    "path": "frameworks/base/services/tests/wmtests/src/com/android/server/wm/AuraSmallWindowInsetsTests.java",
+    "repository": "frameworks/base",
+    "patch_group": "01-frameworks-base-small-window",
+    "new_file": true,
+    "sha256": "07d25a346a2d41b47d00bcb457d42c54e7404263800f4d7a51768716f5ace422",
+    "canonical_sha256": "07d25a346a2d41b47d00bcb457d42c54e7404263800f4d7a51768716f5ace422",
+    "export_transform": null
+  },
+  {
+    "path": "frameworks/base/libs/WindowManager/Shell/res/layout/aura_small_window_caption.xml",
+    "repository": "frameworks/base",
+    "patch_group": "01-frameworks-base-small-window",
+    "new_file": true,
+    "sha256": "6bb78aefe54db55913df7b1b659305255f92b7d90e766b09f799d7d11e240f08",
+    "canonical_sha256": "e3310f14d316a6021d1bac389117d10f07233cf9f1d1e29fb1173acb55409a48",
+    "export_transform": null
+  },
+  {
+    "path": "frameworks/base/libs/WindowManager/Shell/res/drawable/aura_small_window_caption_background.xml",
+    "repository": "frameworks/base",
+    "patch_group": "01-frameworks-base-small-window",
+    "new_file": true,
+    "sha256": "ed39ae1f6fab6ebfc9ce7535301fb98b0c89d5243d577463621f6e201d2ceeda",
+    "canonical_sha256": "ed39ae1f6fab6ebfc9ce7535301fb98b0c89d5243d577463621f6e201d2ceeda",
+    "export_transform": null
+  },
+  {
+    "path": "frameworks/base/libs/WindowManager/Shell/res/drawable/aura_small_window_button_back.xml",
+    "repository": "frameworks/base",
+    "patch_group": "01-frameworks-base-small-window",
+    "new_file": true,
+    "sha256": "698fbe1c747dd3a9fd46b66c9cf368c375a9ed9b7067624cd2d5df130849fab7",
+    "canonical_sha256": "698fbe1c747dd3a9fd46b66c9cf368c375a9ed9b7067624cd2d5df130849fab7",
+    "export_transform": null
+  },
+  {
+    "path": "frameworks/base/libs/WindowManager/Shell/res/drawable/aura_small_window_button_fullscreen.xml",
+    "repository": "frameworks/base",
+    "patch_group": "01-frameworks-base-small-window",
+    "new_file": true,
+    "sha256": "d20b17f1612ba0bc16f6c68384c5d1858e60fba24561ec71bdbe6822bd3ceb23",
+    "canonical_sha256": "d20b17f1612ba0bc16f6c68384c5d1858e60fba24561ec71bdbe6822bd3ceb23",
+    "export_transform": null
+  },
+  {
+    "path": "frameworks/base/libs/WindowManager/Shell/res/drawable/aura_small_window_button_restore.xml",
+    "repository": "frameworks/base",
+    "patch_group": "01-frameworks-base-small-window",
+    "new_file": true,
+    "sha256": "f743ccf5c991e6eb2fa598d2c026d03371abc893be04ebff7b602fad35ae879c",
+    "canonical_sha256": "f743ccf5c991e6eb2fa598d2c026d03371abc893be04ebff7b602fad35ae879c",
+    "export_transform": null
+  },
+  {
+    "path": "frameworks/base/libs/WindowManager/Shell/res/drawable/aura_small_window_button_close.xml",
+    "repository": "frameworks/base",
+    "patch_group": "01-frameworks-base-small-window",
+    "new_file": true,
+    "sha256": "3b0d53975ba1058ee89b2cb266da61f3093aea4504322bdf97125ce1c6ab44f3",
+    "canonical_sha256": "3b0d53975ba1058ee89b2cb266da61f3093aea4504322bdf97125ce1c6ab44f3",
+    "export_transform": null
+  },
+  {
+    "path": "frameworks/base/libs/WindowManager/Shell/res/color/aura_small_window_button_icon_on_light.xml",
+    "repository": "frameworks/base",
+    "patch_group": "01-frameworks-base-small-window",
+    "new_file": true,
+    "sha256": "046b2c0f169cb4b8fc22319f32dfca0b362453cb9834d3233535780687eec762",
+    "canonical_sha256": "046b2c0f169cb4b8fc22319f32dfca0b362453cb9834d3233535780687eec762",
+    "export_transform": null
+  },
+  {
+    "path": "frameworks/base/libs/WindowManager/Shell/res/color/aura_small_window_button_icon_on_dark.xml",
+    "repository": "frameworks/base",
+    "patch_group": "01-frameworks-base-small-window",
+    "new_file": true,
+    "sha256": "feef80ad9d7f44ac4f0970e1e897e8013a13ee644d6099a1b4589f6144d69186",
+    "canonical_sha256": "feef80ad9d7f44ac4f0970e1e897e8013a13ee644d6099a1b4589f6144d69186",
+    "export_transform": null
+  },
+  {
+    "path": "frameworks/base/libs/WindowManager/Shell/res/values/aura_small_window.xml",
+    "repository": "frameworks/base",
+    "patch_group": "01-frameworks-base-small-window",
+    "new_file": true,
+    "sha256": "ef8d3cf581b2bd64022b49b8d65fe58db61b8b9f1a519f03d15867ace373dada",
+    "canonical_sha256": "ef8d3cf581b2bd64022b49b8d65fe58db61b8b9f1a519f03d15867ace373dada",
+    "export_transform": null
+  },
+  {
+    "path": "frameworks/base/libs/WindowManager/Shell/res/values-night/aura_small_window.xml",
+    "repository": "frameworks/base",
+    "patch_group": "01-frameworks-base-small-window",
+    "new_file": true,
+    "sha256": "671d7387c263ab675902c7fa4f734c6e2567e8ca03c229e8266408a3884b7a33",
+    "canonical_sha256": "671d7387c263ab675902c7fa4f734c6e2567e8ca03c229e8266408a3884b7a33",
+    "export_transform": null
+  },
+  {
+    "path": "frameworks/base/libs/WindowManager/Shell/res/values-zh-rCN/aura_small_window.xml",
+    "repository": "frameworks/base",
+    "patch_group": "01-frameworks-base-small-window",
+    "new_file": true,
+    "sha256": "da0998cac960655b7ed1edb85fbd4631f1646f568494fdcd42fc8901aca62735",
+    "canonical_sha256": "da0998cac960655b7ed1edb85fbd4631f1646f568494fdcd42fc8901aca62735",
+    "export_transform": null
+  },
+  {
+    "path": "frameworks/base/core/java/android/app/TaskInfo.java",
+    "repository": "frameworks/base",
+    "patch_group": "01-frameworks-base-small-window",
+    "new_file": false,
+    "sha256": "b20f9d7515a0cfcd0f60c4dd2e6d04cb4b37030969e36f3d1b242bdff9efd99b",
+    "canonical_sha256": "078a97800bcefaf5649b13c9fdecdc3db8fc1eaf098ff6ab049e7113d0805dfc",
+    "export_transform": null
+  },
+  {
+    "path": "frameworks/base/packages/SystemUI/src/com/android/keyguard/KeyguardUpdateMonitor.java",
+    "repository": "frameworks/base",
+    "patch_group": "03-frameworks-base-display-lifecycle",
+    "new_file": false,
+    "sha256": "376c590c06eea56de8f62e3a35678d67ff893b7866a6ca4bd27f4314d12ff84a",
+    "canonical_sha256": "376c590c06eea56de8f62e3a35678d67ff893b7866a6ca4bd27f4314d12ff84a",
+    "export_transform": null
+  },
+  {
+    "path": "frameworks/base/libs/WindowManager/Shell/src/com/android/wm/shell/dagger/WMShellModule.java",
+    "repository": "frameworks/base",
+    "patch_group": "01-frameworks-base-small-window",
+    "new_file": false,
+    "sha256": "feebfee2735ec1cfe829cfbf1c3deab61c40338d66d4b7a1983ce3a3e5c06f7c",
+    "canonical_sha256": "feebfee2735ec1cfe829cfbf1c3deab61c40338d66d4b7a1983ce3a3e5c06f7c",
+    "export_transform": null
+  },
+  {
+    "path": "frameworks/base/libs/WindowManager/Shell/src/com/android/wm/shell/recents/IRecentTasks.aidl",
+    "repository": "frameworks/base",
+    "patch_group": "01-frameworks-base-small-window",
+    "new_file": false,
+    "sha256": "6bdf097eb54a6d843746fd4bf0eb8a78158a425c0f3964b6aee9d469b15c6aad",
+    "canonical_sha256": "6bdf097eb54a6d843746fd4bf0eb8a78158a425c0f3964b6aee9d469b15c6aad",
+    "export_transform": null
+  },
+  {
+    "path": "frameworks/base/libs/WindowManager/Shell/src/com/android/wm/shell/recents/RecentTasksController.java",
+    "repository": "frameworks/base",
+    "patch_group": "01-frameworks-base-small-window",
+    "new_file": false,
+    "sha256": "e39ca91170bc632d3f14123f2568918dca80d168eb688a6448c7ba3c2c4c7c00",
+    "canonical_sha256": "e39ca91170bc632d3f14123f2568918dca80d168eb688a6448c7ba3c2c4c7c00",
+    "export_transform": null
+  },
+  {
+    "path": "packages/apps/Launcher3/quickstep/src/com/android/quickstep/SystemUiProxy.kt",
+    "repository": "packages/apps/Launcher3",
+    "patch_group": "05-launcher3-small-window",
+    "new_file": false,
+    "sha256": "f480f7209db5c718f8bbf6f74e742ba8ef0baa23eb673fd887d09a5e88d32f0e",
+    "canonical_sha256": "f480f7209db5c718f8bbf6f74e742ba8ef0baa23eb673fd887d09a5e88d32f0e",
+    "export_transform": null
+  },
+  {
+    "path": "packages/apps/Launcher3/quickstep/src/com/android/launcher3/uioverrides/QuickstepLauncher.java",
+    "repository": "packages/apps/Launcher3",
+    "patch_group": "05-launcher3-small-window",
+    "new_file": false,
+    "sha256": "92420b18521abdcfa7e95fed175c97a24ef4e74fc03eab65a6481b9c4a791f44",
+    "canonical_sha256": "92420b18521abdcfa7e95fed175c97a24ef4e74fc03eab65a6481b9c4a791f44",
+    "export_transform": null
+  },
+  {
+    "path": "frameworks/base/libs/WindowManager/Shell/src/com/android/wm/shell/freeform/AuraSmallWindowImeController.java",
+    "repository": "frameworks/base",
+    "patch_group": "01-frameworks-base-small-window",
+    "new_file": true,
+    "sha256": "c98602da0f8fd35c1c003c45d90594c1caff460be304fd291727674d43e3fd73",
+    "canonical_sha256": "c98602da0f8fd35c1c003c45d90594c1caff460be304fd291727674d43e3fd73",
+    "export_transform": null
+  },
+  {
+    "path": "frameworks/base/libs/WindowManager/Shell/src/com/android/wm/shell/windowdecor/WindowDecorViewModel.java",
+    "repository": "frameworks/base",
+    "patch_group": "01-frameworks-base-small-window",
+    "new_file": false,
+    "sha256": "fc56410e9f7a6f9595ac51090722a0006fb34a225439fae50572fed76c9e29ed",
+    "canonical_sha256": "7314fc24888e524108c965c698afc8bf69b1e96b327f78a25c473dc3a299ca55",
+    "export_transform": null
+  },
+  {
+    "path": "frameworks/base/libs/WindowManager/Shell/src/com/android/wm/shell/windowdecor/CaptionWindowDecorViewModel.java",
+    "repository": "frameworks/base",
+    "patch_group": "01-frameworks-base-small-window",
+    "new_file": false,
+    "sha256": "850b942c5da8ad84eae0bb7c0daa41fa39e41953e8ea53077a0fab42c17c1334",
+    "canonical_sha256": "382027a63f949b97ad74b736a5f162420ff4a8e75b7251bf1881d97c64714196",
+    "export_transform": null
+  },
+  {
+    "path": "frameworks/base/libs/WindowManager/Shell/src/com/android/wm/shell/freeform/AuraSmallWindowImeGeometry.java",
+    "repository": "frameworks/base",
+    "patch_group": "01-frameworks-base-small-window",
+    "new_file": true,
+    "sha256": "eca20c544730e7c9c2f310d8cbd583dcaeb80543e389c81ff9fd0a22acbe8380",
+    "canonical_sha256": "eca20c544730e7c9c2f310d8cbd583dcaeb80543e389c81ff9fd0a22acbe8380",
+    "export_transform": null
+  },
+  {
+    "path": "frameworks/base/core/java/android/window/WindowContainerTransaction.java",
+    "repository": "frameworks/base",
+    "patch_group": "01-frameworks-base-small-window",
+    "new_file": false,
+    "sha256": "8e7ff614595119ed0deb2ac4b03062c634152927e04183834a2dbd16b885c924",
+    "canonical_sha256": "8e7ff614595119ed0deb2ac4b03062c634152927e04183834a2dbd16b885c924",
+    "export_transform": null
+  },
+  {
+    "path": "frameworks/base/services/core/java/com/android/server/wm/WindowOrganizerController.java",
+    "repository": "frameworks/base",
+    "patch_group": "01-frameworks-base-small-window",
+    "new_file": false,
+    "sha256": "4af4028fde6a2ff6bafd7fd17fe61d7c1e85829212be6985c5ecf07035e1ff56",
+    "canonical_sha256": "a328600d66e25d4685c1631cb5ad2fd2487e05bed0115b03f93a160a288e0ef9",
+    "export_transform": null
+  },
+  {
+    "path": "frameworks/base/libs/WindowManager/Shell/res/drawable/aura_small_window_button_more.xml",
+    "repository": "frameworks/base",
+    "patch_group": "01-frameworks-base-small-window",
+    "new_file": true,
+    "sha256": "86d48364643bfe58986cb98669472336914b7ebef1a83a2d9877c10caf2bbe38",
+    "canonical_sha256": "deeee39661fc14d0ea4d9dd51a8f51c7e6684cb938d3d5553bb07fc169d3af89",
+    "export_transform": null
+  },
+  {
+    "path": "frameworks/base/libs/WindowManager/Shell/res/layout/aura_small_window_menu_item.xml",
+    "repository": "frameworks/base",
+    "patch_group": "01-frameworks-base-small-window",
+    "new_file": true,
+    "sha256": "25d6341e78f01d5b769e8187477938682f780ec054d15023241b92b78926470c",
+    "canonical_sha256": "25d6341e78f01d5b769e8187477938682f780ec054d15023241b92b78926470c",
+    "export_transform": null
+  },
+  {
+    "path": "frameworks/base/libs/WindowManager/Shell/src/com/android/wm/shell/windowdecor/aura/AuraSmallWindowBottomBarView.java",
+    "repository": "frameworks/base",
+    "patch_group": "01-frameworks-base-small-window",
+    "new_file": true,
+    "sha256": "8d4766612e66c5c38596b2def21e64abfb9f7e93bbaf1ce9c12ad33fab95b8fc",
+    "canonical_sha256": "8d4766612e66c5c38596b2def21e64abfb9f7e93bbaf1ce9c12ad33fab95b8fc",
+    "export_transform": null
+  },
+  {
+    "path": "frameworks/base/libs/WindowManager/Shell/src/com/android/wm/shell/windowdecor/AuraSmallWindowBottomDecoration.java",
+    "repository": "frameworks/base",
+    "patch_group": "01-frameworks-base-small-window",
+    "new_file": true,
+    "sha256": "67bc9aa542c23d488e0ae78e14a5326be652b3645e2ffb7521cdb69c25283e58",
+    "canonical_sha256": "67bc9aa542c23d488e0ae78e14a5326be652b3645e2ffb7521cdb69c25283e58",
+    "export_transform": null
+  },
+  {
+    "path": "frameworks/base/core/tests/coretests/src/android/window/WindowContainerTransactionAuraTest.java",
+    "repository": "frameworks/base",
+    "patch_group": "01-frameworks-base-small-window",
+    "new_file": true,
+    "sha256": "7080e9308200c0605a2836717af19b4017090885920e471fe3f5af931ae04e4a",
+    "canonical_sha256": "7080e9308200c0605a2836717af19b4017090885920e471fe3f5af931ae04e4a",
+    "export_transform": null
+  },
+  {
+    "path": "frameworks/base/services/core/java/com/android/server/wm/AuraSmallWindowTouchRegion.java",
+    "repository": "frameworks/base",
+    "patch_group": "01-frameworks-base-small-window",
+    "new_file": true,
+    "sha256": "4b8ff23fb22d396a82596a9ecf3075fa16a52d3a29ec0b85f8dbba0195f7d654",
+    "canonical_sha256": "4b8ff23fb22d396a82596a9ecf3075fa16a52d3a29ec0b85f8dbba0195f7d654",
+    "export_transform": null
+  },
+  {
+    "path": "frameworks/base/services/core/java/com/android/server/wm/TaskInputSink.java",
+    "repository": "frameworks/base",
+    "patch_group": "01-frameworks-base-small-window",
+    "new_file": false,
+    "sha256": "61f0e64745502036522c699f6602faf9007a5ca00a23380252734f0a9a7105a8",
+    "canonical_sha256": "61f0e64745502036522c699f6602faf9007a5ca00a23380252734f0a9a7105a8",
+    "export_transform": null
+  },
+  {
+    "path": "frameworks/base/services/core/java/com/android/server/wm/ActivityRecordInputSink.java",
+    "repository": "frameworks/base",
+    "patch_group": "01-frameworks-base-small-window",
+    "new_file": false,
+    "sha256": "7978e4212498d7827ffc85db20f68a351df0600940089d65abbdd5e4bb08ddbf",
+    "canonical_sha256": "7978e4212498d7827ffc85db20f68a351df0600940089d65abbdd5e4bb08ddbf",
+    "export_transform": null
+  },
+  {
+    "path": "frameworks/base/libs/WindowManager/Shell/src/com/android/wm/shell/windowdecor/WindowDecoration.java",
+    "repository": "frameworks/base",
+    "patch_group": "01-frameworks-base-small-window",
+    "new_file": false,
+    "sha256": "cbbbcdf10e00c06b3ccc9dd52e816b22da27f36c361fb7144fa526de643ecb60",
+    "canonical_sha256": "bc6f91a4ec2af09f38596e823dc0f5454bb57ac98a87469be98666be2fa84b1b",
+    "export_transform": null
+  },
+  {
+    "path": "frameworks/base/core/java/android/window/TransitionInfo.java",
+    "repository": "frameworks/base",
+    "patch_group": "01-frameworks-base-small-window",
+    "new_file": false,
+    "sha256": "5d50f3c8f79d4bbfd456fc1d3f12e59741e3f712cf39ee97a5d5fdc1ef90954a",
+    "canonical_sha256": "5d50f3c8f79d4bbfd456fc1d3f12e59741e3f712cf39ee97a5d5fdc1ef90954a",
+    "export_transform": null
+  },
+  {
+    "path": "frameworks/base/libs/WindowManager/Shell/src/com/android/wm/shell/freeform/AuraSmallWindowTransitionGeometry.java",
+    "repository": "frameworks/base",
+    "patch_group": "01-frameworks-base-small-window",
+    "new_file": true,
+    "sha256": "e5cb6f8371c83e5c17c0b06c22faef179e329e6616c14a3a7883041160358818",
+    "canonical_sha256": "e5cb6f8371c83e5c17c0b06c22faef179e329e6616c14a3a7883041160358818",
+    "export_transform": null
+  },
+  {
+    "path": "frameworks/base/libs/WindowManager/Shell/src/com/android/wm/shell/freeform/AuraSmallWindowTransitionAnimation.java",
+    "repository": "frameworks/base",
+    "patch_group": "01-frameworks-base-small-window",
+    "new_file": true,
+    "sha256": "e25a282e65c0ba84fcf0be96d856555baa8e66ee3955b30db7d8bee449569a9d",
+    "canonical_sha256": "8cf61966e9b563f308051554147bc525c9780e68922eb87a1a1fd01c35b3c6b6",
+    "export_transform": null
+  },
+  {
+    "path": "frameworks/base/libs/WindowManager/Shell/src/com/android/wm/shell/freeform/FreeformTaskTransitionHandler.java",
+    "repository": "frameworks/base",
+    "patch_group": "01-frameworks-base-small-window",
+    "new_file": false,
+    "sha256": "07c4f4a728f1056d14e9091fb28e8e0b52ead5a7149ea25a52afef223beb9c39",
+    "canonical_sha256": "6b00667c4e78027465c8704baaa1847a459afd9759a9aae5ba18bb0ba96a751a",
+    "export_transform": null
+  },
+  {
+    "path": "frameworks/base/services/core/java/com/android/server/wm/InputMonitor.java",
+    "repository": "frameworks/base",
+    "patch_group": "01-frameworks-base-small-window",
+    "new_file": false,
+    "sha256": "34b9f1ddcca7a16a6acd015931af5ba66ad1df283ecbf3c739408d9d202c6c77",
+    "canonical_sha256": "34b9f1ddcca7a16a6acd015931af5ba66ad1df283ecbf3c739408d9d202c6c77",
+    "export_transform": null
+  },
+  {
+    "path": "frameworks/base/libs/WindowManager/Shell/src/com/android/wm/shell/windowdecor/aura/AuraWindowInteraction.java",
+    "repository": "frameworks/base",
+    "patch_group": "01-frameworks-base-small-window",
+    "new_file": true,
+    "sha256": "3c66e38d171b12d25e852f066bef2bb4bfc5b6e7b015b8a743c8be88fcb501e1",
+    "canonical_sha256": "3c66e38d171b12d25e852f066bef2bb4bfc5b6e7b015b8a743c8be88fcb501e1",
+    "export_transform": null
+  },
+  {
+    "path": "frameworks/base/libs/WindowManager/Shell/src/com/android/wm/shell/windowdecor/aura/AuraWindowGestureRecognizer.java",
+    "repository": "frameworks/base",
+    "patch_group": "01-frameworks-base-small-window",
+    "new_file": true,
+    "sha256": "169c4ab2bffca3d9232f769b67182b942ca3fcf571af3d64b9095a0a1676c18d",
+    "canonical_sha256": "169c4ab2bffca3d9232f769b67182b942ca3fcf571af3d64b9095a0a1676c18d",
+    "export_transform": null
+  },
+  {
+    "path": "frameworks/base/libs/WindowManager/Shell/src/com/android/wm/shell/windowdecor/aura/AuraWindowResizeGeometry.java",
+    "repository": "frameworks/base",
+    "patch_group": "01-frameworks-base-small-window",
+    "new_file": true,
+    "sha256": "a5540beb1cdb4f637ebcf487b649d0158d2d9cdcf77ed6174be4df28e251e7bc",
+    "canonical_sha256": "a5540beb1cdb4f637ebcf487b649d0158d2d9cdcf77ed6174be4df28e251e7bc",
+    "export_transform": null
+  },
+  {
+    "path": "frameworks/native/libs/gui/include/gui/WindowInfo.h",
+    "repository": "frameworks/native",
+    "patch_group": "02-frameworks-native-input",
+    "new_file": false,
+    "sha256": "8e3713695f93c03743a186e44ac73d94a552f9383c0a2419ac2324bd7d9852c1",
+    "canonical_sha256": "8e3713695f93c03743a186e44ac73d94a552f9383c0a2419ac2324bd7d9852c1",
+    "export_transform": null
+  },
+  {
+    "path": "frameworks/native/libs/gui/WindowInfo.cpp",
+    "repository": "frameworks/native",
+    "patch_group": "02-frameworks-native-input",
+    "new_file": false,
+    "sha256": "81eb9178fdd4598ed526da0113583b631bb079b38365ee4fef83a3a829e935c3",
+    "canonical_sha256": "81eb9178fdd4598ed526da0113583b631bb079b38365ee4fef83a3a829e935c3",
+    "export_transform": null
+  },
+  {
+    "path": "frameworks/base/core/java/android/view/InputWindowHandle.java",
+    "repository": "frameworks/base",
+    "patch_group": "01-frameworks-base-small-window",
+    "new_file": false,
+    "sha256": "55f34b95924c1ff3e08415c63e9e595c2fbc718d6090d1d1215d14a8ba01b79c",
+    "canonical_sha256": "55f34b95924c1ff3e08415c63e9e595c2fbc718d6090d1d1215d14a8ba01b79c",
+    "export_transform": null
+  },
+  {
+    "path": "frameworks/base/core/jni/android_hardware_input_InputWindowHandle.cpp",
+    "repository": "frameworks/base",
+    "patch_group": "01-frameworks-base-small-window",
+    "new_file": false,
+    "sha256": "44b2a982e0454a460beba5b5a479f52961088fc54fa8fc2b3ed1214047b29583",
+    "canonical_sha256": "44b2a982e0454a460beba5b5a479f52961088fc54fa8fc2b3ed1214047b29583",
+    "export_transform": null
+  },
+  {
+    "path": "frameworks/native/services/surfaceflinger/FrontEnd/LayerSnapshotBuilder.cpp",
+    "repository": "frameworks/native",
+    "patch_group": "02-frameworks-native-input",
+    "new_file": false,
+    "sha256": "db02d849a70b84dc25b1ebce905fe0ccb56909cec2160d38be8365d6337d0195",
+    "canonical_sha256": "db02d849a70b84dc25b1ebce905fe0ccb56909cec2160d38be8365d6337d0195",
+    "export_transform": null
+  },
+  {
+    "path": "frameworks/native/services/surfaceflinger/FrontEnd/RoundedTouchOcclusion.h",
+    "repository": "frameworks/native",
+    "patch_group": "02-frameworks-native-input",
+    "new_file": true,
+    "sha256": "85c0dff1a3bdcc640c101e6ea6c1e7c8c221d7bdd68bca82492b167549acbdf6",
+    "canonical_sha256": "85c0dff1a3bdcc640c101e6ea6c1e7c8c221d7bdd68bca82492b167549acbdf6",
+    "export_transform": null
+  },
+  {
+    "path": "frameworks/native/services/inputflinger/dispatcher/InputDispatcher.cpp",
+    "repository": "frameworks/native",
+    "patch_group": "02-frameworks-native-input",
+    "new_file": false,
+    "sha256": "1904314605b7fcf02614b992489f3b8cdcf5352b086a22d3c81d1619dd81189a",
+    "canonical_sha256": "1904314605b7fcf02614b992489f3b8cdcf5352b086a22d3c81d1619dd81189a",
+    "export_transform": null
+  },
+  {
+    "path": "frameworks/native/services/surfaceflinger/tests/aura/Android.bp",
+    "repository": "frameworks/native",
+    "patch_group": "02-frameworks-native-input",
+    "new_file": true,
+    "sha256": "ebc1d02aba61d869d9f658dce69ecb3da9ca6efa5fc7d0a9ba41bd64f225f2f4",
+    "canonical_sha256": "ebc1d02aba61d869d9f658dce69ecb3da9ca6efa5fc7d0a9ba41bd64f225f2f4",
+    "export_transform": null
+  },
+  {
+    "path": "frameworks/native/services/surfaceflinger/tests/aura/RoundedTouchOcclusionTest.cpp",
+    "repository": "frameworks/native",
+    "patch_group": "02-frameworks-native-input",
+    "new_file": true,
+    "sha256": "66765d7c8982693fa83b881214b79c5e1dad0fd80c91837f5a1afa1ca842fba0",
+    "canonical_sha256": "66765d7c8982693fa83b881214b79c5e1dad0fd80c91837f5a1afa1ca842fba0",
+    "export_transform": null
+  },
+  {
+    "path": "frameworks/native/services/surfaceflinger/tests/aura/RoundedTouchOcclusionReference.h",
+    "repository": "frameworks/native",
+    "patch_group": "02-frameworks-native-input",
+    "new_file": true,
+    "sha256": "be273d013ac025adc64e0dad067e67bf87592db0de75ff75138296c7ac705a2c",
+    "canonical_sha256": "be273d013ac025adc64e0dad067e67bf87592db0de75ff75138296c7ac705a2c",
+    "export_transform": null
+  },
+  {
+    "path": "frameworks/base/libs/WindowManager/Shell/src/com/android/wm/shell/windowdecor/AuraSmallWindowGestureSession.java",
+    "repository": "frameworks/base",
+    "patch_group": "01-frameworks-base-small-window",
+    "new_file": true,
+    "sha256": "a65c429ff4780d35bba6f6692dd2b0094d12f4a746747b9d868bc21cb53abb47",
+    "canonical_sha256": "a65c429ff4780d35bba6f6692dd2b0094d12f4a746747b9d868bc21cb53abb47",
+    "export_transform": null
+  },
+  {
+    "path": "frameworks/native/services/surfaceflinger/FrontEnd/RequestedLayerState.cpp",
+    "repository": "frameworks/native",
+    "patch_group": "02-frameworks-native-input",
+    "new_file": false,
+    "sha256": "a3d93fde19add7badff3071f3ea3a7e752356923386edecd2f99cbaf300f08c6",
+    "canonical_sha256": "a3d93fde19add7badff3071f3ea3a7e752356923386edecd2f99cbaf300f08c6",
+    "export_transform": null
+  },
+  {
+    "path": "frameworks/base/libs/WindowManager/Shell/src/com/android/wm/shell/windowdecor/AuraSmallWindowResizeTransition.java",
+    "repository": "frameworks/base",
+    "patch_group": "01-frameworks-base-small-window",
+    "new_file": true,
+    "sha256": "b0954e975be2ef08769ebc2824f55720780d50df0712239f020445d036f9dc92",
+    "canonical_sha256": "040db25688228ff6569a60cad8c248e470dd3b1918b816ce534d058b564b113c",
+    "export_transform": null
+  },
+  {
+    "path": "frameworks/base/libs/WindowManager/Shell/src/com/android/wm/shell/windowdecor/AuraSmallWindowCaptionPreview.java",
+    "repository": "frameworks/base",
+    "patch_group": "01-frameworks-base-small-window",
+    "new_file": true,
+    "sha256": "63c984bc06bc3329ede895e0a4888c022e16336aef7294942f746320fb306de7",
+    "canonical_sha256": "63c984bc06bc3329ede895e0a4888c022e16336aef7294942f746320fb306de7",
+    "export_transform": null
+  },
+  {
+    "path": "frameworks/libs/systemui/displaylib/src/com/android/app/displaylib/PerDisplayRepository.kt",
+    "repository": "frameworks/libs/systemui",
+    "patch_group": "04-systemui-displaylib-lifecycle",
+    "new_file": false,
+    "sha256": "26929887ce4081d06f57e807cbb8f264f793c7a7402c65a8df50b1b4014b92db",
+    "canonical_sha256": "26929887ce4081d06f57e807cbb8f264f793c7a7402c65a8df50b1b4014b92db",
+    "export_transform": null
+  },
+  {
+    "path": "frameworks/base/packages/SystemUI/src/com/android/systemui/display/data/repository/DisplayComponentRepository.kt",
+    "repository": "frameworks/base",
+    "patch_group": "03-frameworks-base-display-lifecycle",
+    "new_file": false,
+    "sha256": "ae0d03306f7fb73467143034c544f684109b74fa39ebd94e6c5564f057aa6d77",
+    "canonical_sha256": "ae0d03306f7fb73467143034c544f684109b74fa39ebd94e6c5564f057aa6d77",
+    "export_transform": null
+  },
+  {
+    "path": "frameworks/base/libs/WindowManager/Shell/src/com/android/wm/shell/windowdecor/AuraSmallWindowInteractionController.java",
+    "repository": "frameworks/base",
+    "patch_group": "01-frameworks-base-small-window",
+    "new_file": true,
+    "sha256": "741fd3a2cc168b484ed744e17c49efae1a356d963be08214de7177a42f49c9c6",
+    "canonical_sha256": "2ac0a79c8dcfa28bfaa35d508ce4795e2ad73f8b49d9fe26796f4b5a0d0c4714",
+    "export_transform": null
+  },
+  {
+    "path": "frameworks/base/libs/WindowManager/Shell/src/com/android/wm/shell/windowdecor/AuraSmallWindowPointerMonitor.java",
+    "repository": "frameworks/base",
+    "patch_group": "01-frameworks-base-small-window",
+    "new_file": true,
+    "sha256": "fd7f841a606054fde4c1058320d345dd0393fa7921a8aa34a7671a3c76082463",
+    "canonical_sha256": "fd7f841a606054fde4c1058320d345dd0393fa7921a8aa34a7671a3c76082463",
+    "export_transform": null
+  },
+  {
+    "path": "frameworks/base/libs/WindowManager/Shell/src/com/android/wm/shell/windowdecor/AuraSmallWindowMiniDecoration.java",
+    "repository": "frameworks/base",
+    "patch_group": "01-frameworks-base-small-window",
+    "new_file": true,
+    "sha256": "13c5336fed1b92516b070aefcab43ca93fbdbad53cc2e347edd65e2eb58b941a",
+    "canonical_sha256": "13c5336fed1b92516b070aefcab43ca93fbdbad53cc2e347edd65e2eb58b941a",
+    "export_transform": null
+  },
+  {
+    "path": "frameworks/base/libs/WindowManager/Shell/src/com/android/wm/shell/windowdecor/aura/AuraSmallWindowMiniGeometry.java",
+    "repository": "frameworks/base",
+    "patch_group": "01-frameworks-base-small-window",
+    "new_file": true,
+    "sha256": "4238b8e9bd0f98deff719e3fc92f903fe45a8e349ebe7cd1909be2f4b41b23ad",
+    "canonical_sha256": "38f2fea9238c18363983678fcfd66759070f20f773f8333c90a82de20d045506",
+    "export_transform": null
+  },
+  {
+    "path": "packages/apps/Launcher3/quickstep/src/com/android/quickstep/AbsSwipeUpHandler.java",
+    "repository": "packages/apps/Launcher3",
+    "patch_group": "05-launcher3-small-window",
+    "new_file": false,
+    "sha256": "e7af9bf3a806c71c356e22129c15048b3e792a191ae69bdd3c43d5bef1349995",
+    "canonical_sha256": "e7af9bf3a806c71c356e22129c15048b3e792a191ae69bdd3c43d5bef1349995",
+    "export_transform": null
+  },
+  {
+    "path": "packages/apps/Launcher3/quickstep/src/com/android/quickstep/inputconsumers/OtherActivityInputConsumer.java",
+    "repository": "packages/apps/Launcher3",
+    "patch_group": "05-launcher3-small-window",
+    "new_file": false,
+    "sha256": "3a3a3c7e3dac8aa843d903cfbcfef392819bef91a3356e740c782ef41b987827",
+    "canonical_sha256": "3a3a3c7e3dac8aa843d903cfbcfef392819bef91a3356e740c782ef41b987827",
+    "export_transform": null
+  },
+  {
+    "path": "packages/apps/Launcher3/quickstep/src/com/android/quickstep/AuraSmallWindowSwipeController.java",
+    "repository": "packages/apps/Launcher3",
+    "patch_group": "05-launcher3-small-window",
+    "new_file": true,
+    "sha256": "006ab748cd99d3c3b24415299f00f52fd03252468b6542eb7b9c10d25c8e705e",
+    "canonical_sha256": "0f579e5d4494baca1b6aead91ae15a0f2a8cdd44723526faf4d6569d68fca46f",
+    "export_transform": null
+  },
+  {
+    "path": "packages/apps/Launcher3/quickstep/src/com/android/quickstep/LauncherSwipeHandlerV2.java",
+    "repository": "packages/apps/Launcher3",
+    "patch_group": "05-launcher3-small-window",
+    "new_file": false,
+    "sha256": "282e2a403bba3c87e8b498bf7c0d89ef0a271af7aab447ded2431b31f9a2525c",
+    "canonical_sha256": "8f948384565ff25d40f5c56f952c4a7ab3ab53634e6b574ad58fd58b3b20422a",
+    "export_transform": "Removed optional Island home-target call and method; restoration is patch 07"
+  },
+  {
+    "path": "frameworks/base/libs/WindowManager/Shell/src/com/android/wm/shell/recents/RecentsTransitionHandler.java",
+    "repository": "frameworks/base",
+    "patch_group": "01-frameworks-base-small-window",
+    "new_file": false,
+    "sha256": "2deaf4e74a9dcbf0fc77f353e205778820abec96e5cc43759a4a2a74983d5dd6",
+    "canonical_sha256": "d4ee7ef4bbf219a54aa0b5ebb939ba4fb5f8e7b16d829fb6f422c3e0642de6dc",
+    "export_transform": null
+  },
+  {
+    "path": "frameworks/base/libs/WindowManager/Shell/src/com/android/wm/shell/recents/RecentsTransitionStateListener.java",
+    "repository": "frameworks/base",
+    "patch_group": "01-frameworks-base-small-window",
+    "new_file": false,
+    "sha256": "8f1380f5d5c08d1bbacd01ae28208ba2d243e24a981466cc9735539f10680638",
+    "canonical_sha256": "6065420e17c5f384999bb1f89614f861cbdae162a73f83083438a1259ad8cb3b",
+    "export_transform": null
+  },
+  {
+    "path": "frameworks/base/libs/WindowManager/Shell/src/com/android/wm/shell/windowdecor/AuraSmallWindowViewport.java",
+    "repository": "frameworks/base",
+    "patch_group": "01-frameworks-base-small-window",
+    "new_file": true,
+    "sha256": "11d03ce700d6aa944f0f56a53d3d290130a6770ea6dff675f86d749ebb698505",
+    "canonical_sha256": "2fc511c2256c84537a8da623e5695ac0dc0e2a94d7ff5df7d970129a76979ef8",
+    "export_transform": null
+  },
+  {
+    "path": "packages/apps/Launcher3/quickstep/src/com/android/quickstep/TopTaskTracker.java",
+    "repository": "packages/apps/Launcher3",
+    "patch_group": "05-launcher3-small-window",
+    "new_file": false,
+    "sha256": "299e10221acd737367d3fa45b07bb1f45c20e9350fd8201639f2d7ce6dc1935f",
+    "canonical_sha256": "8cb6e124028d969627fbc2eaa1059f8679bc3a758d2b8d5e292a9864e1a32b4e",
+    "export_transform": null
+  },
+  {
+    "path": "frameworks/base/core/java/android/window/ActivityWindowInfo.java",
+    "repository": "frameworks/base",
+    "patch_group": "01-frameworks-base-small-window",
+    "new_file": false,
+    "sha256": "eb49b90b41b3c67fc413bd5890af2ba9b12c266d482d88f27673f8c2225ad4ea",
+    "canonical_sha256": "eb49b90b41b3c67fc413bd5890af2ba9b12c266d482d88f27673f8c2225ad4ea",
+    "export_transform": null
+  },
+  {
+    "path": "frameworks/base/services/core/java/com/android/server/wm/ActivityRecord.java",
+    "repository": "frameworks/base",
+    "patch_group": "01-frameworks-base-small-window",
+    "new_file": false,
+    "sha256": "47db9adf42bec85c0828582ccb47846b993628c5ecc3adb60dd9992ec46c0ea2",
+    "canonical_sha256": "47db9adf42bec85c0828582ccb47846b993628c5ecc3adb60dd9992ec46c0ea2",
+    "export_transform": null
+  },
+  {
+    "path": "frameworks/base/core/java/android/app/Activity.java",
+    "repository": "frameworks/base",
+    "patch_group": "01-frameworks-base-small-window",
+    "new_file": false,
+    "sha256": "01f0c90836aef01a321dd2012f8a6e01e0baec3b7e0e9b7b55c0fb9c2937a235",
+    "canonical_sha256": "01f0c90836aef01a321dd2012f8a6e01e0baec3b7e0e9b7b55c0fb9c2937a235",
+    "export_transform": null
+  },
+  {
+    "path": "frameworks/base/core/java/android/app/ActivityThread.java",
+    "repository": "frameworks/base",
+    "patch_group": "01-frameworks-base-small-window",
+    "new_file": false,
+    "sha256": "009e10e56b44c9e58a078f6f46fa6dccba9a2648bc8c443fe2851738b8353484",
+    "canonical_sha256": "009e10e56b44c9e58a078f6f46fa6dccba9a2648bc8c443fe2851738b8353484",
+    "export_transform": null
+  },
+  {
+    "path": "frameworks/base/services/core/java/com/android/server/wm/AuraSmallWindowOrientationGeometry.java",
+    "repository": "frameworks/base",
+    "patch_group": "01-frameworks-base-small-window",
+    "new_file": true,
+    "sha256": "9ecff711ef71017f61c91f6a857ec155a05c069dde400f5e7299ecf5ff689798",
+    "canonical_sha256": "f27f94f70e38ee8a89d63df368d67af7846ccfbd5c73ff08f9069a9ee8695728",
+    "export_transform": null
+  },
+  {
+    "path": "frameworks/base/libs/WindowManager/Shell/src/com/android/wm/shell/windowdecor/AuraSmallWindowCornerHitTest.java",
+    "repository": "frameworks/base",
+    "patch_group": "01-frameworks-base-small-window",
+    "new_file": true,
+    "sha256": "4cd3348996976bd2319e644032f128aeffaecf0ff822a94be0bf99a84192ebdb",
+    "canonical_sha256": "4cd3348996976bd2319e644032f128aeffaecf0ff822a94be0bf99a84192ebdb",
+    "export_transform": null
+  },
+  {
+    "path": "frameworks/base/packages/SystemUI/src/com/android/systemui/navigationbar/gestural/AuraSidebarSwipe.java",
+    "repository": "frameworks/base",
+    "patch_group": "06-systemui-sidebar",
+    "new_file": true,
+    "sha256": "e0773e23ec97d9b05517ed1d7d213319cfd8d4de9b8f0046f4434752a8477dda",
+    "canonical_sha256": "e0773e23ec97d9b05517ed1d7d213319cfd8d4de9b8f0046f4434752a8477dda",
+    "export_transform": null
+  },
+  {
+    "path": "frameworks/base/packages/SystemUI/src/com/android/systemui/navigationbar/gestural/AuraSmallWindowSidebar.java",
+    "repository": "frameworks/base",
+    "patch_group": "06-systemui-sidebar",
+    "new_file": true,
+    "sha256": "13f86d7dbd84e13b189dec53175b2d281449d5b4c6fdf678086dba133bf99a6a",
+    "canonical_sha256": "950b2797fd3d205a86def71bb1b11e7ca23bd4a72331f7e066f2b2b619e8358d",
+    "export_transform": null
+  },
+  {
+    "path": "frameworks/base/packages/SystemUI/src/com/android/systemui/navigationbar/gestural/BackPanel.kt",
+    "repository": "frameworks/base",
+    "patch_group": "06-systemui-sidebar",
+    "new_file": false,
+    "sha256": "8406f33835fe1b057671112bc40390ec3b42ac449eb02986c55cf5f58f188af0",
+    "canonical_sha256": "223a1cb8b3436b666e7e47082468e861f9a4f8b8c1268c9358ddcb070695bb2c",
+    "export_transform": null
+  },
+  {
+    "path": "frameworks/base/packages/SystemUI/src/com/android/systemui/navigationbar/gestural/BackPanelController.kt",
+    "repository": "frameworks/base",
+    "patch_group": "06-systemui-sidebar",
+    "new_file": false,
+    "sha256": "8682538756c776498f52233fba12ab2f5944a8266e8deb3f671fd0129fa4f43e",
+    "canonical_sha256": "b6b1221d690e0a9189b295ece63f13e232d5da8b998c670e8692488b7e2cdd29",
+    "export_transform": null
+  },
+  {
+    "path": "frameworks/base/packages/SystemUI/src/com/android/systemui/navigationbar/gestural/EdgeBackGestureHandler.java",
+    "repository": "frameworks/base",
+    "patch_group": "06-systemui-sidebar",
+    "new_file": false,
+    "sha256": "389ae6a9b0bae51fc957d95de630fe0fa9971a15193828ecaaccb5a45506f1e5",
+    "canonical_sha256": "f1e4c5d5de667bf353df7870627f743b0b3aa70504e4073f2321d1dea594de86",
+    "export_transform": null
+  },
+  {
+    "path": "frameworks/base/packages/SystemUI/res/values/aura_small_window_sidebar.xml",
+    "repository": "frameworks/base",
+    "patch_group": "06-systemui-sidebar",
+    "new_file": true,
+    "sha256": "e37f70f7b611752729f0a080223792c46f64a08c87a48acf79260d40a61457ec",
+    "canonical_sha256": "e37f70f7b611752729f0a080223792c46f64a08c87a48acf79260d40a61457ec",
+    "export_transform": null
+  },
+  {
+    "path": "frameworks/base/packages/SystemUI/res/values-zh-rCN/aura_small_window_sidebar.xml",
+    "repository": "frameworks/base",
+    "patch_group": "06-systemui-sidebar",
+    "new_file": true,
+    "sha256": "24a59d3dcf258e8d045be441d18dcba7df53d8cec1629a1b838cd8bb331b997b",
+    "canonical_sha256": "24a59d3dcf258e8d045be441d18dcba7df53d8cec1629a1b838cd8bb331b997b",
+    "export_transform": null
+  },
+  {
+    "path": "frameworks/base/packages/SystemUI/src/com/android/systemui/navigationbar/gestural/DisplayBackGestureHandler.kt",
+    "repository": "frameworks/base",
+    "patch_group": "06-systemui-sidebar",
+    "new_file": false,
+    "sha256": "a564ef42208b124e4e996c1ee0f41464aef4c714eca2d224b83a9aed3a8052bb",
+    "canonical_sha256": "a564ef42208b124e4e996c1ee0f41464aef4c714eca2d224b83a9aed3a8052bb",
+    "export_transform": null
+  }
+]

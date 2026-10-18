@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Merge into a framework-res overlay; adapt missing names on older branches. -->
+<resources>
+    <bool name="config_isDesktopModeSupported">false</bool>
+    <bool name="config_isDesktopModeDevOptionSupported">false</bool>
+    <bool name="config_canInternalDisplayHostDesktops">false</bool>
+</resources>

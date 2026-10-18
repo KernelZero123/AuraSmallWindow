@@ -1,0 +1,64 @@
+diff --git a/quickstep/src/com/android/quickstep/LauncherSwipeHandlerV2.java b/quickstep/src/com/android/quickstep/LauncherSwipeHandlerV2.java
+--- a/quickstep/src/com/android/quickstep/LauncherSwipeHandlerV2.java
++++ b/quickstep/src/com/android/quickstep/LauncherSwipeHandlerV2.java
+@@ -162,6 +162,22 @@
+             };
+         }
+ 
++        final RectF islandTarget = getAuraIslandHomeTarget(runningTaskTarget);
++        if (islandTarget != null && !appCanEnterPip && !mIsSwipeForSplit
++                && !mHandOffAnimationToHome && targetTaskView == null) {
++            mContainer.getRootView().setForceHideBackArrow(true);
++            android.util.Log.i("AuraIslandHome", "swipe home into capsule " + islandTarget);
++            return new LauncherHomeAnimationFactory() {
++                @Override
++                public RectF getWindowTargetRect() { return islandTarget; }
++
++                @Override
++                protected float getWindowAlpha(float progress) {
++                    return progress <= 0.7f ? 1f : Math.max(0f, (1f - progress) / 0.3f);
++                }
++            };
++        }
++
+         TaskView sourceTaskView = mRecentsView == null && targetTaskView == null
+                 ? null
+                 : targetTaskView == null
+@@ -193,6 +209,37 @@
+                     isTargetTranslucent, runningTaskTarget);
+         }
+         return createIconHomeAnimationFactory(workspaceView, targetTaskView);
++    }
++
++    @Nullable
++    private RectF getAuraIslandHomeTarget(RemoteAnimationTarget target) {
++        if (target == null || target.taskInfo == null || target.taskInfo.topActivity == null
++                || target.taskInfo.userId != UserHandle.myUserId()
++                || mDp.getDeviceProperties().isLandscape() || mDp.isSeascape()) return null;
++        try {
++            final var resolver = mContext.getContentResolver();
++            if (android.provider.Settings.Global.getInt(resolver, "aura_island_on", 0) == 0
++                    || android.provider.Settings.Global.getInt(resolver,
++                            "aura_island_media", 0) == 0) return null;
++            final String value = android.provider.Settings.Global.getString(resolver,
++                    "aura_island_home_target");
++            if (value == null) return null;
++            final String[] fields = value.split("\\|");
++            if (fields.length != 5
++                    || !fields[0].equals(target.taskInfo.topActivity.getPackageName())) return null;
++            final RectF rect = new RectF(Float.parseFloat(fields[1]), Float.parseFloat(fields[2]),
++                    Float.parseFloat(fields[3]), Float.parseFloat(fields[4]));
++            final int[] location = new int[2];
++            mContainer.getRootView().getLocationOnScreen(location);
++            rect.offset(-location[0], -location[1]);
++            if (rect.isEmpty() || rect.left < 0 || rect.top < 0
++                    || rect.right > mDp.getDeviceProperties().getWidthPx()
++                    || rect.bottom > mDp.getDeviceProperties().getHeightPx()) return null;
++            return rect;
++        } catch (RuntimeException e) {
++            android.util.Log.w("AuraIslandHome", "invalid capsule target", e);
++            return null;
++        }
+     }
+ 
+     private HomeAnimationFactory createIconHomeAnimationFactory(

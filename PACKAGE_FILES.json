@@ -1,0 +1,637 @@
+[
+  {
+    "path": "baseline.json",
+    "size": 926,
+    "sha256": "ff3d85dcd45bb3ea5bdf06ab46e1ffcf182a835438db0fb8848df87b8dbef54b"
+  },
+  {
+    "path": "docs/PORTING.md",
+    "size": 6776,
+    "sha256": "4fa6b80de93969a7fd0ca65738a8ae119dc06239cc511fa6a1cf2516543e7285"
+  },
+  {
+    "path": "docs/VALIDATION.md",
+    "size": 3027,
+    "sha256": "1b952d8f89de37fbe03949ef8e59a8505429bd8818488cb5916e8de765978869"
+  },
+  {
+    "path": "excluded-files.json",
+    "size": 869,
+    "sha256": "448311b9dbf99b0ba8917a3a411c4ca66e9f838201fe46364ce8cb1d558f78f1"
+  },
+  {
+    "path": "EXPORT_VALIDATION.json",
+    "size": 404,
+    "sha256": "3035003811abde79ca8afa799d7e81f0432cdc3a7b6b3144e0ccedc6f51f60aa"
+  },
+  {
+    "path": "integration/aura-small-window.mk",
+    "size": 582,
+    "sha256": "380faccd8519b988c274c2725a29bfe77135712ba0c7de25ad3163c626eb6194"
+  },
+  {
+    "path": "integration/overlay-values.xml",
+    "size": 345,
+    "sha256": "a5900853f98ebb2bc0f86a2c99a8e0d4de2388b4efebf3033295e93d4051360c"
+  },
+  {
+    "path": "integration/property_contexts.fragment",
+    "size": 192,
+    "sha256": "3670f3f3634d40e32e9e341efd3e435bc390618c09957362d8c99d5b233f126a"
+  },
+  {
+    "path": "licenses/frameworks_base-NOTICE",
+    "size": 18182,
+    "sha256": "cf4dd7cea5b6bcd2622ddd3529b3c74d16ba2b4db444575bc6f5c33f8a960530"
+  },
+  {
+    "path": "licenses/frameworks_native-NOTICE",
+    "size": 17680,
+    "sha256": "5f28c11f8b1b3f97b9d42c74b85371ebf4127f241b799279bcecd69f7ee542dc"
+  },
+  {
+    "path": "patch-series.json",
+    "size": 918,
+    "sha256": "08d4ccb0287a2bf2ab598b59091c470e8672ac57bf0b69d9edebfde74e49a9d8"
+  },
+  {
+    "path": "patches/01-frameworks-base-small-window.patch",
+    "size": 495772,
+    "sha256": "4f518a56150c080b2e3ce3d135f3d45d0fba4d972faae51ed83d2615699e5b9d"
+  },
+  {
+    "path": "patches/02-frameworks-native-input.patch",
+    "size": 30499,
+    "sha256": "8d47e6c03a3d31a8c303c7c926e512495d5850dad22be4774aa48d04a1fea668"
+  },
+  {
+    "path": "patches/03-frameworks-base-display-lifecycle.patch",
+    "size": 3097,
+    "sha256": "9a87aab470d8e683cc18c484f842373c32b0c87f37baec1d640a4b760d72f5c4"
+  },
+  {
+    "path": "patches/04-systemui-displaylib-lifecycle.patch",
+    "size": 2158,
+    "sha256": "70fe1627dcd9d96cb4418aafb97456c4cb3053c5ef51f4b4cda919d80131b484"
+  },
+  {
+    "path": "patches/05-launcher3-small-window.patch",
+    "size": 51733,
+    "sha256": "cc130654741cda778c0bd9907a959049f7275325f260738ffc635be2918df802"
+  },
+  {
+    "path": "patches/06-systemui-sidebar.patch",
+    "size": 44778,
+    "sha256": "c3a4dca7eaf7a44d84febab50b42d6c34e2a6c747998e80560c0045c1887c264"
+  },
+  {
+    "path": "patches/07-optional-island-home-hook.patch",
+    "size": 3329,
+    "sha256": "7e00e4d3491f2c2894ddb11a5c130ac50e57c413c63868604440f86bede84b2e"
+  },
+  {
+    "path": "README.md",
+    "size": 4378,
+    "sha256": "c3648b1ac71459776cab2a185cf1e6ad29c859db25ac96b0065eed75052e9496"
+  },
+  {
+    "path": "source/frameworks/base/core/java/android/app/Activity.java",
+    "size": 456257,
+    "sha256": "01f0c90836aef01a321dd2012f8a6e01e0baec3b7e0e9b7b55c0fb9c2937a235"
+  },
+  {
+    "path": "source/frameworks/base/core/java/android/app/ActivityThread.java",
+    "size": 420320,
+    "sha256": "009e10e56b44c9e58a078f6f46fa6dccba9a2648bc8c443fe2851738b8353484"
+  },
+  {
+    "path": "source/frameworks/base/core/java/android/app/TaskInfo.java",
+    "size": 26525,
+    "sha256": "b20f9d7515a0cfcd0f60c4dd2e6d04cb4b37030969e36f3d1b242bdff9efd99b"
+  },
+  {
+    "path": "source/frameworks/base/core/java/android/view/InputWindowHandle.java",
+    "size": 11279,
+    "sha256": "55f34b95924c1ff3e08415c63e9e595c2fbc718d6090d1d1215d14a8ba01b79c"
+  },
+  {
+    "path": "source/frameworks/base/core/java/android/window/ActivityWindowInfo.java",
+    "size": 5583,
+    "sha256": "eb49b90b41b3c67fc413bd5890af2ba9b12c266d482d88f27673f8c2225ad4ea"
+  },
+  {
+    "path": "source/frameworks/base/core/java/android/window/TransitionInfo.java",
+    "size": 60967,
+    "sha256": "5d50f3c8f79d4bbfd456fc1d3f12e59741e3f712cf39ee97a5d5fdc1ef90954a"
+  },
+  {
+    "path": "source/frameworks/base/core/java/android/window/WindowContainerTransaction.java",
+    "size": 131460,
+    "sha256": "8e7ff614595119ed0deb2ac4b03062c634152927e04183834a2dbd16b885c924"
+  },
+  {
+    "path": "source/frameworks/base/core/jni/android_hardware_input_InputWindowHandle.cpp",
+    "size": 19415,
+    "sha256": "44b2a982e0454a460beba5b5a479f52961088fc54fa8fc2b3ed1214047b29583"
+  },
+  {
+    "path": "source/frameworks/base/core/tests/coretests/src/android/window/WindowContainerTransactionAuraTest.java",
+    "size": 6212,
+    "sha256": "7080e9308200c0605a2836717af19b4017090885920e471fe3f5af931ae04e4a"
+  },
+  {
+    "path": "source/frameworks/base/libs/WindowManager/Shell/res/color/aura_small_window_button_icon_on_dark.xml",
+    "size": 397,
+    "sha256": "feef80ad9d7f44ac4f0970e1e897e8013a13ee644d6099a1b4589f6144d69186"
+  },
+  {
+    "path": "source/frameworks/base/libs/WindowManager/Shell/res/color/aura_small_window_button_icon_on_light.xml",
+    "size": 398,
+    "sha256": "046b2c0f169cb4b8fc22319f32dfca0b362453cb9834d3233535780687eec762"
+  },
+  {
+    "path": "source/frameworks/base/libs/WindowManager/Shell/res/drawable/aura_small_window_button_back.xml",
+    "size": 553,
+    "sha256": "698fbe1c747dd3a9fd46b66c9cf368c375a9ed9b7067624cd2d5df130849fab7"
+  },
+  {
+    "path": "source/frameworks/base/libs/WindowManager/Shell/res/drawable/aura_small_window_button_close.xml",
+    "size": 496,
+    "sha256": "3b0d53975ba1058ee89b2cb266da61f3093aea4504322bdf97125ce1c6ab44f3"
+  },
+  {
+    "path": "source/frameworks/base/libs/WindowManager/Shell/res/drawable/aura_small_window_button_fullscreen.xml",
+    "size": 484,
+    "sha256": "d20b17f1612ba0bc16f6c68384c5d1858e60fba24561ec71bdbe6822bd3ceb23"
+  },
+  {
+    "path": "source/frameworks/base/libs/WindowManager/Shell/res/drawable/aura_small_window_button_more.xml",
+    "size": 532,
+    "sha256": "86d48364643bfe58986cb98669472336914b7ebef1a83a2d9877c10caf2bbe38"
+  },
+  {
+    "path": "source/frameworks/base/libs/WindowManager/Shell/res/drawable/aura_small_window_button_restore.xml",
+    "size": 481,
+    "sha256": "f743ccf5c991e6eb2fa598d2c026d03371abc893be04ebff7b602fad35ae879c"
+  },
+  {
+    "path": "source/frameworks/base/libs/WindowManager/Shell/res/drawable/aura_small_window_caption_background.xml",
+    "size": 373,
+    "sha256": "ed39ae1f6fab6ebfc9ce7535301fb98b0c89d5243d577463621f6e201d2ceeda"
+  },
+  {
+    "path": "source/frameworks/base/libs/WindowManager/Shell/res/layout/aura_small_window_caption.xml",
+    "size": 3312,
+    "sha256": "6bb78aefe54db55913df7b1b659305255f92b7d90e766b09f799d7d11e240f08"
+  },
+  {
+    "path": "source/frameworks/base/libs/WindowManager/Shell/res/layout/aura_small_window_menu_item.xml",
+    "size": 886,
+    "sha256": "25d6341e78f01d5b769e8187477938682f780ec054d15023241b92b78926470c"
+  },
+  {
+    "path": "source/frameworks/base/libs/WindowManager/Shell/res/values/aura_small_window.xml",
+    "size": 3610,
+    "sha256": "ef8d3cf581b2bd64022b49b8d65fe58db61b8b9f1a519f03d15867ace373dada"
+  },
+  {
+    "path": "source/frameworks/base/libs/WindowManager/Shell/res/values-night/aura_small_window.xml",
+    "size": 626,
+    "sha256": "671d7387c263ab675902c7fa4f734c6e2567e8ca03c229e8266408a3884b7a33"
+  },
+  {
+    "path": "source/frameworks/base/libs/WindowManager/Shell/res/values-zh-rCN/aura_small_window.xml",
+    "size": 1036,
+    "sha256": "da0998cac960655b7ed1edb85fbd4631f1646f568494fdcd42fc8901aca62735"
+  },
+  {
+    "path": "source/frameworks/base/libs/WindowManager/Shell/src/com/android/wm/shell/dagger/WMShellModule.java",
+    "size": 97354,
+    "sha256": "feebfee2735ec1cfe829cfbf1c3deab61c40338d66d4b7a1983ce3a3e5c06f7c"
+  },
+  {
+    "path": "source/frameworks/base/libs/WindowManager/Shell/src/com/android/wm/shell/freeform/AuraSmallWindowImeController.java",
+    "size": 23824,
+    "sha256": "c98602da0f8fd35c1c003c45d90594c1caff460be304fd291727674d43e3fd73"
+  },
+  {
+    "path": "source/frameworks/base/libs/WindowManager/Shell/src/com/android/wm/shell/freeform/AuraSmallWindowImeGeometry.java",
+    "size": 1343,
+    "sha256": "eca20c544730e7c9c2f310d8cbd583dcaeb80543e389c81ff9fd0a22acbe8380"
+  },
+  {
+    "path": "source/frameworks/base/libs/WindowManager/Shell/src/com/android/wm/shell/freeform/AuraSmallWindowTransitionAnimation.java",
+    "size": 33610,
+    "sha256": "e25a282e65c0ba84fcf0be96d856555baa8e66ee3955b30db7d8bee449569a9d"
+  },
+  {
+    "path": "source/frameworks/base/libs/WindowManager/Shell/src/com/android/wm/shell/freeform/AuraSmallWindowTransitionGeometry.java",
+    "size": 4824,
+    "sha256": "e5cb6f8371c83e5c17c0b06c22faef179e329e6616c14a3a7883041160358818"
+  },
+  {
+    "path": "source/frameworks/base/libs/WindowManager/Shell/src/com/android/wm/shell/freeform/FreeformTaskListener.java",
+    "size": 20607,
+    "sha256": "02fc2d314ca5fe0c8c02710c10bda5dd80d7074579cd73af0258db9f113979d6"
+  },
+  {
+    "path": "source/frameworks/base/libs/WindowManager/Shell/src/com/android/wm/shell/freeform/FreeformTaskTransitionHandler.java",
+    "size": 13185,
+    "sha256": "07c4f4a728f1056d14e9091fb28e8e0b52ead5a7149ea25a52afef223beb9c39"
+  },
+  {
+    "path": "source/frameworks/base/libs/WindowManager/Shell/src/com/android/wm/shell/recents/IRecentTasks.aidl",
+    "size": 2153,
+    "sha256": "6bdf097eb54a6d843746fd4bf0eb8a78158a425c0f3964b6aee9d469b15c6aad"
+  },
+  {
+    "path": "source/frameworks/base/libs/WindowManager/Shell/src/com/android/wm/shell/recents/RecentsTransitionHandler.java",
+    "size": 107042,
+    "sha256": "2deaf4e74a9dcbf0fc77f353e205778820abec96e5cc43759a4a2a74983d5dd6"
+  },
+  {
+    "path": "source/frameworks/base/libs/WindowManager/Shell/src/com/android/wm/shell/recents/RecentsTransitionStateListener.java",
+    "size": 2456,
+    "sha256": "8f1380f5d5c08d1bbacd01ae28208ba2d243e24a981466cc9735539f10680638"
+  },
+  {
+    "path": "source/frameworks/base/libs/WindowManager/Shell/src/com/android/wm/shell/recents/RecentTasksController.java",
+    "size": 48344,
+    "sha256": "e39ca91170bc632d3f14123f2568918dca80d168eb688a6448c7ba3c2c4c7c00"
+  },
+  {
+    "path": "source/frameworks/base/libs/WindowManager/Shell/src/com/android/wm/shell/windowdecor/aura/AuraSmallWindowBottomBarView.java",
+    "size": 13210,
+    "sha256": "8d4766612e66c5c38596b2def21e64abfb9f7e93bbaf1ce9c12ad33fab95b8fc"
+  },
+  {
+    "path": "source/frameworks/base/libs/WindowManager/Shell/src/com/android/wm/shell/windowdecor/aura/AuraSmallWindowMiniGeometry.java",
+    "size": 3563,
+    "sha256": "4238b8e9bd0f98deff719e3fc92f903fe45a8e349ebe7cd1909be2f4b41b23ad"
+  },
+  {
+    "path": "source/frameworks/base/libs/WindowManager/Shell/src/com/android/wm/shell/windowdecor/aura/AuraWindowGestureRecognizer.java",
+    "size": 23558,
+    "sha256": "169c4ab2bffca3d9232f769b67182b942ca3fcf571af3d64b9095a0a1676c18d"
+  },
+  {
+    "path": "source/frameworks/base/libs/WindowManager/Shell/src/com/android/wm/shell/windowdecor/aura/AuraWindowInteraction.java",
+    "size": 19837,
+    "sha256": "3c66e38d171b12d25e852f066bef2bb4bfc5b6e7b015b8a743c8be88fcb501e1"
+  },
+  {
+    "path": "source/frameworks/base/libs/WindowManager/Shell/src/com/android/wm/shell/windowdecor/aura/AuraWindowResizeGeometry.java",
+    "size": 22001,
+    "sha256": "a5540beb1cdb4f637ebcf487b649d0158d2d9cdcf77ed6174be4df28e251e7bc"
+  },
+  {
+    "path": "source/frameworks/base/libs/WindowManager/Shell/src/com/android/wm/shell/windowdecor/AuraSmallWindowBottomDecoration.java",
+    "size": 10159,
+    "sha256": "67bc9aa542c23d488e0ae78e14a5326be652b3645e2ffb7521cdb69c25283e58"
+  },
+  {
+    "path": "source/frameworks/base/libs/WindowManager/Shell/src/com/android/wm/shell/windowdecor/AuraSmallWindowCaptionPreview.java",
+    "size": 3733,
+    "sha256": "63c984bc06bc3329ede895e0a4888c022e16336aef7294942f746320fb306de7"
+  },
+  {
+    "path": "source/frameworks/base/libs/WindowManager/Shell/src/com/android/wm/shell/windowdecor/AuraSmallWindowCornerHitTest.java",
+    "size": 1659,
+    "sha256": "4cd3348996976bd2319e644032f128aeffaecf0ff822a94be0bf99a84192ebdb"
+  },
+  {
+    "path": "source/frameworks/base/libs/WindowManager/Shell/src/com/android/wm/shell/windowdecor/AuraSmallWindowGestureSession.java",
+    "size": 11017,
+    "sha256": "a65c429ff4780d35bba6f6692dd2b0094d12f4a746747b9d868bc21cb53abb47"
+  },
+  {
+    "path": "source/frameworks/base/libs/WindowManager/Shell/src/com/android/wm/shell/windowdecor/AuraSmallWindowInteractionController.java",
+    "size": 32682,
+    "sha256": "741fd3a2cc168b484ed744e17c49efae1a356d963be08214de7177a42f49c9c6"
+  },
+  {
+    "path": "source/frameworks/base/libs/WindowManager/Shell/src/com/android/wm/shell/windowdecor/AuraSmallWindowMiniDecoration.java",
+    "size": 5315,
+    "sha256": "13c5336fed1b92516b070aefcab43ca93fbdbad53cc2e347edd65e2eb58b941a"
+  },
+  {
+    "path": "source/frameworks/base/libs/WindowManager/Shell/src/com/android/wm/shell/windowdecor/AuraSmallWindowPointerMonitor.java",
+    "size": 10611,
+    "sha256": "fd7f841a606054fde4c1058320d345dd0393fa7921a8aa34a7671a3c76082463"
+  },
+  {
+    "path": "source/frameworks/base/libs/WindowManager/Shell/src/com/android/wm/shell/windowdecor/AuraSmallWindowResizeTransition.java",
+    "size": 25041,
+    "sha256": "b0954e975be2ef08769ebc2824f55720780d50df0712239f020445d036f9dc92"
+  },
+  {
+    "path": "source/frameworks/base/libs/WindowManager/Shell/src/com/android/wm/shell/windowdecor/AuraSmallWindowViewport.java",
+    "size": 1420,
+    "sha256": "11d03ce700d6aa944f0f56a53d3d290130a6770ea6dff675f86d749ebb698505"
+  },
+  {
+    "path": "source/frameworks/base/libs/WindowManager/Shell/src/com/android/wm/shell/windowdecor/CaptionWindowDecoration.java",
+    "size": 69362,
+    "sha256": "5a18b154544a2e1446ef082e6377c74b0ad378f9d26489e87e8c883ded7d9006"
+  },
+  {
+    "path": "source/frameworks/base/libs/WindowManager/Shell/src/com/android/wm/shell/windowdecor/CaptionWindowDecorViewModel.java",
+    "size": 42321,
+    "sha256": "850b942c5da8ad84eae0bb7c0daa41fa39e41953e8ea53077a0fab42c17c1334"
+  },
+  {
+    "path": "source/frameworks/base/libs/WindowManager/Shell/src/com/android/wm/shell/windowdecor/TaskOperations.java",
+    "size": 4875,
+    "sha256": "20b713369305fa795f98b8ff1d65ec8c384341de4f13156d14fdc6a8c3e681c5"
+  },
+  {
+    "path": "source/frameworks/base/libs/WindowManager/Shell/src/com/android/wm/shell/windowdecor/WindowDecoration.java",
+    "size": 44711,
+    "sha256": "cbbbcdf10e00c06b3ccc9dd52e816b22da27f36c361fb7144fa526de643ecb60"
+  },
+  {
+    "path": "source/frameworks/base/libs/WindowManager/Shell/src/com/android/wm/shell/windowdecor/WindowDecorViewModel.java",
+    "size": 5418,
+    "sha256": "fc56410e9f7a6f9595ac51090722a0006fb34a225439fae50572fed76c9e29ed"
+  },
+  {
+    "path": "source/frameworks/base/packages/SystemUI/res/values/aura_small_window_sidebar.xml",
+    "size": 717,
+    "sha256": "e37f70f7b611752729f0a080223792c46f64a08c87a48acf79260d40a61457ec"
+  },
+  {
+    "path": "source/frameworks/base/packages/SystemUI/res/values-zh-rCN/aura_small_window_sidebar.xml",
+    "size": 730,
+    "sha256": "24a59d3dcf258e8d045be441d18dcba7df53d8cec1629a1b838cd8bb331b997b"
+  },
+  {
+    "path": "source/frameworks/base/packages/SystemUI/src/com/android/keyguard/KeyguardUpdateMonitor.java",
+    "size": 189086,
+    "sha256": "376c590c06eea56de8f62e3a35678d67ff893b7866a6ca4bd27f4314d12ff84a"
+  },
+  {
+    "path": "source/frameworks/base/packages/SystemUI/src/com/android/systemui/display/data/repository/DisplayComponentRepository.kt",
+    "size": 4001,
+    "sha256": "ae0d03306f7fb73467143034c544f684109b74fa39ebd94e6c5564f057aa6d77"
+  },
+  {
+    "path": "source/frameworks/base/packages/SystemUI/src/com/android/systemui/navigationbar/gestural/AuraSidebarSwipe.java",
+    "size": 3623,
+    "sha256": "e0773e23ec97d9b05517ed1d7d213319cfd8d4de9b8f0046f4434752a8477dda"
+  },
+  {
+    "path": "source/frameworks/base/packages/SystemUI/src/com/android/systemui/navigationbar/gestural/AuraSmallWindowSidebar.java",
+    "size": 23601,
+    "sha256": "13f86d7dbd84e13b189dec53175b2d281449d5b4c6fdf678086dba133bf99a6a"
+  },
+  {
+    "path": "source/frameworks/base/packages/SystemUI/src/com/android/systemui/navigationbar/gestural/BackPanel.kt",
+    "size": 20504,
+    "sha256": "8406f33835fe1b057671112bc40390ec3b42ac449eb02986c55cf5f58f188af0"
+  },
+  {
+    "path": "source/frameworks/base/packages/SystemUI/src/com/android/systemui/navigationbar/gestural/BackPanelController.kt",
+    "size": 50649,
+    "sha256": "8682538756c776498f52233fba12ab2f5944a8266e8deb3f671fd0129fa4f43e"
+  },
+  {
+    "path": "source/frameworks/base/packages/SystemUI/src/com/android/systemui/navigationbar/gestural/DisplayBackGestureHandler.kt",
+    "size": 9399,
+    "sha256": "a564ef42208b124e4e996c1ee0f41464aef4c714eca2d224b83a9aed3a8052bb"
+  },
+  {
+    "path": "source/frameworks/base/packages/SystemUI/src/com/android/systemui/navigationbar/gestural/EdgeBackGestureHandler.java",
+    "size": 78273,
+    "sha256": "389ae6a9b0bae51fc957d95de630fe0fa9971a15193828ecaaccb5a45506f1e5"
+  },
+  {
+    "path": "source/frameworks/base/services/core/java/com/android/server/wm/ActivityRecord.java",
+    "size": 451055,
+    "sha256": "47db9adf42bec85c0828582ccb47846b993628c5ecc3adb60dd9992ec46c0ea2"
+  },
+  {
+    "path": "source/frameworks/base/services/core/java/com/android/server/wm/ActivityRecordInputSink.java",
+    "size": 11881,
+    "sha256": "7978e4212498d7827ffc85db20f68a351df0600940089d65abbdd5e4bb08ddbf"
+  },
+  {
+    "path": "source/frameworks/base/services/core/java/com/android/server/wm/AuraSmallWindowInsets.java",
+    "size": 3711,
+    "sha256": "e976c1326600822bff94ac31b8c1901036a67e5d54fddce589b8a1df183e2d09"
+  },
+  {
+    "path": "source/frameworks/base/services/core/java/com/android/server/wm/AuraSmallWindowOrientationGeometry.java",
+    "size": 2933,
+    "sha256": "9ecff711ef71017f61c91f6a857ec155a05c069dde400f5e7299ecf5ff689798"
+  },
+  {
+    "path": "source/frameworks/base/services/core/java/com/android/server/wm/AuraSmallWindowTouchRegion.java",
+    "size": 1976,
+    "sha256": "4b8ff23fb22d396a82596a9ecf3075fa16a52d3a29ec0b85f8dbba0195f7d654"
+  },
+  {
+    "path": "source/frameworks/base/services/core/java/com/android/server/wm/InputMonitor.java",
+    "size": 35852,
+    "sha256": "34b9f1ddcca7a16a6acd015931af5ba66ad1df283ecbf3c739408d9d202c6c77"
+  },
+  {
+    "path": "source/frameworks/base/services/core/java/com/android/server/wm/Task.java",
+    "size": 325779,
+    "sha256": "9102344847972de42a814ed01d1c3f47b37aa6ef882584762f30d24711282c1f"
+  },
+  {
+    "path": "source/frameworks/base/services/core/java/com/android/server/wm/TaskInputSink.java",
+    "size": 5300,
+    "sha256": "61f0e64745502036522c699f6602faf9007a5ca00a23380252734f0a9a7105a8"
+  },
+  {
+    "path": "source/frameworks/base/services/core/java/com/android/server/wm/Transition.java",
+    "size": 217962,
+    "sha256": "bc34c5b39737a671bd3c177f17855b6629087aafcdbab7bee9a27ee46ddd485b"
+  },
+  {
+    "path": "source/frameworks/base/services/core/java/com/android/server/wm/WindowOrganizerController.java",
+    "size": 163433,
+    "sha256": "4af4028fde6a2ff6bafd7fd17fe61d7c1e85829212be6985c5ecf07035e1ff56"
+  },
+  {
+    "path": "source/frameworks/base/services/core/java/com/android/server/wm/WindowState.java",
+    "size": 267705,
+    "sha256": "c4557d42d8019e796d405f2549908cef6c85c25db12b09726de3f4073fab75f5"
+  },
+  {
+    "path": "source/frameworks/base/services/tests/wmtests/src/com/android/server/wm/AuraSmallWindowInsetsTests.java",
+    "size": 7843,
+    "sha256": "07d25a346a2d41b47d00bcb457d42c54e7404263800f4d7a51768716f5ace422"
+  },
+  {
+    "path": "source/frameworks/libs/systemui/displaylib/src/com/android/app/displaylib/PerDisplayRepository.kt",
+    "size": 15444,
+    "sha256": "26929887ce4081d06f57e807cbb8f264f793c7a7402c65a8df50b1b4014b92db"
+  },
+  {
+    "path": "source/frameworks/native/libs/gui/include/gui/WindowInfo.h",
+    "size": 12981,
+    "sha256": "8e3713695f93c03743a186e44ac73d94a552f9383c0a2419ac2324bd7d9852c1"
+  },
+  {
+    "path": "source/frameworks/native/libs/gui/WindowInfo.cpp",
+    "size": 12064,
+    "sha256": "81eb9178fdd4598ed526da0113583b631bb079b38365ee4fef83a3a829e935c3"
+  },
+  {
+    "path": "source/frameworks/native/services/inputflinger/dispatcher/InputDispatcher.cpp",
+    "size": 364068,
+    "sha256": "1904314605b7fcf02614b992489f3b8cdcf5352b086a22d3c81d1619dd81189a"
+  },
+  {
+    "path": "source/frameworks/native/services/surfaceflinger/FrontEnd/LayerSnapshotBuilder.cpp",
+    "size": 79767,
+    "sha256": "db02d849a70b84dc25b1ebce905fe0ccb56909cec2160d38be8365d6337d0195"
+  },
+  {
+    "path": "source/frameworks/native/services/surfaceflinger/FrontEnd/RequestedLayerState.cpp",
+    "size": 29016,
+    "sha256": "a3d93fde19add7badff3071f3ea3a7e752356923386edecd2f99cbaf300f08c6"
+  },
+  {
+    "path": "source/frameworks/native/services/surfaceflinger/FrontEnd/RoundedTouchOcclusion.h",
+    "size": 7279,
+    "sha256": "85c0dff1a3bdcc640c101e6ea6c1e7c8c221d7bdd68bca82492b167549acbdf6"
+  },
+  {
+    "path": "source/frameworks/native/services/surfaceflinger/tests/aura/Android.bp",
+    "size": 293,
+    "sha256": "ebc1d02aba61d869d9f658dce69ecb3da9ca6efa5fc7d0a9ba41bd64f225f2f4"
+  },
+  {
+    "path": "source/frameworks/native/services/surfaceflinger/tests/aura/RoundedTouchOcclusionReference.h",
+    "size": 5102,
+    "sha256": "be273d013ac025adc64e0dad067e67bf87592db0de75ff75138296c7ac705a2c"
+  },
+  {
+    "path": "source/frameworks/native/services/surfaceflinger/tests/aura/RoundedTouchOcclusionTest.cpp",
+    "size": 7716,
+    "sha256": "66765d7c8982693fa83b881214b79c5e1dad0fd80c91837f5a1afa1ca842fba0"
+  },
+  {
+    "path": "source/packages/apps/Launcher3/quickstep/res/values/aura_small_window.xml",
+    "size": 123,
+    "sha256": "8b53e1c8e1532673ca61ab5927fbb2a626e13f05c041923ef90aff07f22aed65"
+  },
+  {
+    "path": "source/packages/apps/Launcher3/quickstep/res/values-zh-rCN/aura_small_window.xml",
+    "size": 117,
+    "sha256": "d0d5d9ef807ebff46f8cfb348e0b41c6907c7909a6ef6a40c2843e9b89cfcffb"
+  },
+  {
+    "path": "source/packages/apps/Launcher3/quickstep/src/com/android/launcher3/uioverrides/QuickstepLauncher.java",
+    "size": 78946,
+    "sha256": "92420b18521abdcfa7e95fed175c97a24ef4e74fc03eab65a6481b9c4a791f44"
+  },
+  {
+    "path": "source/packages/apps/Launcher3/quickstep/src/com/android/quickstep/AbsSwipeUpHandler.java",
+    "size": 151859,
+    "sha256": "e7af9bf3a806c71c356e22129c15048b3e792a191ae69bdd3c43d5bef1349995"
+  },
+  {
+    "path": "source/packages/apps/Launcher3/quickstep/src/com/android/quickstep/AuraSmallWindowSwipeController.java",
+    "size": 28157,
+    "sha256": "006ab748cd99d3c3b24415299f00f52fd03252468b6542eb7b9c10d25c8e705e"
+  },
+  {
+    "path": "source/packages/apps/Launcher3/quickstep/src/com/android/quickstep/inputconsumers/OtherActivityInputConsumer.java",
+    "size": 30498,
+    "sha256": "3a3a3c7e3dac8aa843d903cfbcfef392819bef91a3356e740c782ef41b987827"
+  },
+  {
+    "path": "source/packages/apps/Launcher3/quickstep/src/com/android/quickstep/LauncherSwipeHandlerV2.java",
+    "size": 20720,
+    "sha256": "282e2a403bba3c87e8b498bf7c0d89ef0a271af7aab447ded2431b31f9a2525c"
+  },
+  {
+    "path": "source/packages/apps/Launcher3/quickstep/src/com/android/quickstep/SystemUiProxy.kt",
+    "size": 60559,
+    "sha256": "f480f7209db5c718f8bbf6f74e742ba8ef0baa23eb673fd887d09a5e88d32f0e"
+  },
+  {
+    "path": "source/packages/apps/Launcher3/quickstep/src/com/android/quickstep/TaskShortcutFactory.java",
+    "size": 26143,
+    "sha256": "86afdb3de4ebf6c3760e58b3ce83bff34e6fc0553c1925a96844a540119916e3"
+  },
+  {
+    "path": "source/packages/apps/Launcher3/quickstep/src/com/android/quickstep/TopTaskTracker.java",
+    "size": 29994,
+    "sha256": "299e10221acd737367d3fa45b07bb1f45c20e9350fd8201639f2d7ce6dc1935f"
+  },
+  {
+    "path": "source-files.json",
+    "size": 40531,
+    "sha256": "348b7a997cfa041d89413b75995f9ddbdccd33eb4ad4a097eeec1f20e545950b"
+  },
+  {
+    "path": "tests/gesture/gesture-test-jdk21.log",
+    "size": 467,
+    "sha256": "d1e8df736bc1941e1113ad33b60517b53c8b03ea67ecca888f2044497143f78d"
+  },
+  {
+    "path": "tests/gesture/gesture-test.log",
+    "size": 480,
+    "sha256": "9fddd52694097ef70b714923da2068bd8b4cae81c8ce4252ba42a988adf5fd5e"
+  },
+  {
+    "path": "tests/gesture/src/com/android/wm/shell/windowdecor/aura/BottomBarGestureTests.java",
+    "size": 25647,
+    "sha256": "16c2d1c7680df879c18b16ce9222fec0e639c88b008ec59b273cdd50e158f486"
+  },
+  {
+    "path": "tests/gesture/src/com/android/wm/shell/windowdecor/aura/Fixtures.java",
+    "size": 4952,
+    "sha256": "dff63cee2a0959d026bc2618545513ac4143c221316935f78f62485ded1f090e"
+  },
+  {
+    "path": "tests/gesture/src/com/android/wm/shell/windowdecor/aura/GestureProbeMain.java",
+    "size": 5521,
+    "sha256": "796cd8924b24eb81d624aeb0b42f68db3dc76664a83a7119331e718e3256d047"
+  },
+  {
+    "path": "tests/gesture/src/com/android/wm/shell/windowdecor/aura/ProbeCheck.java",
+    "size": 2819,
+    "sha256": "8a60209353f6a6246a3fc592d7cfd29451d69f28c34f512d1e3ba6f2025a64e0"
+  },
+  {
+    "path": "tests/gesture/src/com/android/wm/shell/windowdecor/aura/ProtocolTests.java",
+    "size": 8738,
+    "sha256": "be0a1fb455187c9586ea760eb24c477ac31597e9f15fb0aadee8cb7a9efdfd28"
+  },
+  {
+    "path": "tests/gesture/src/com/android/wm/shell/windowdecor/aura/ResizeBoundaryTests.java",
+    "size": 20426,
+    "sha256": "63d8e55df796ccaf71f0fa0ff6ecee3cb318205ef6ea286ca6f806092a95e53e"
+  },
+  {
+    "path": "tests/gesture/src/com/android/wm/shell/windowdecor/aura/ResizeGeometryTests.java",
+    "size": 25538,
+    "sha256": "cfdffcd4d143dc5303ca6ecce9ea99cb50bdda5d693a6344ee356db50eaef8b5"
+  },
+  {
+    "path": "tests/gesture/src/com/android/wm/shell/windowdecor/aura/SpeedAndSpeedThresholdTests.java",
+    "size": 15940,
+    "sha256": "30efbd9d4a942a59e8800093642b0179a8deabdd41d5ebcd3b9dd18998cd7346"
+  },
+  {
+    "path": "tools/check-patches.py",
+    "size": 1609,
+    "sha256": "ca6671e536bf4226f7f77a9020a0a9059e3362e2517f6259a08dd14494fae95b"
+  },
+  {
+    "path": "tools/run-gesture-tests.py",
+    "size": 1350,
+    "sha256": "b8dcb4e9421af9e7e4b609c927566f648bad765a482cb2cf62d8798bc1a1f197"
+  },
+  {
+    "path": "tools/verify-export.py",
+    "size": 1348,
+    "sha256": "05cd30c69567010b40fdc0745f09223e6ae4dbc8b46470f02d4d72bd6f51e60b"
+  }
+]

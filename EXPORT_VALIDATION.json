@@ -1,0 +1,13 @@
+{
+  "source_files": 94,
+  "patches": 7,
+  "baseline_patch_check": "passed",
+  "full_source_reconstruction": "passed",
+  "canonical_matches_current_tree": true,
+  "full_android_build": "not run for independent export; target-branch build required",
+  "phone_changed": false,
+  "pure_jdk_tests": {
+    "Windows JDK25": "6302 assertions passed",
+    "Linux JDK21": "6302 assertions passed"
+  }
+}

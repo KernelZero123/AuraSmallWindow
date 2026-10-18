@@ -1,0 +1,3 @@
+# Exact read-only properties shared by WMS, Launcher and WM Shell.
+ro.aura.small_window       u:object_r:build_prop:s0 exact bool
+ro.aura.small_window_scale u:object_r:build_prop:s0 exact int

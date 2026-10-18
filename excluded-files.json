@@ -1,0 +1,26 @@
+[
+  {
+    "path": "device/bluefox/Aura_A1/device.mk",
+    "reason": "device-specific mixed settings"
+  },
+  {
+    "path": "device/bluefox/Aura_A1/overlay/AuraRefreshRateOverlay/res/values/config.xml",
+    "reason": "device-specific mixed settings"
+  },
+  {
+    "path": "device/bluefox/Aura_A1/sepolicy_system_ext/property_contexts",
+    "reason": "device-specific mixed settings"
+  },
+  {
+    "path": "frameworks/base/packages/SystemUI/src/com/android/systemui/SystemUIInitializer.java",
+    "reason": "no changes against recorded HEAD"
+  },
+  {
+    "path": "frameworks/base/packages/SystemUI/src/com/android/systemui/dagger/SysUIComponent.java",
+    "reason": "no changes against recorded HEAD"
+  },
+  {
+    "path": "frameworks/base/packages/SystemUI/src/com/android/systemui/statusbar/phone/DozeParameters.java",
+    "reason": "no changes against recorded HEAD"
+  }
+]

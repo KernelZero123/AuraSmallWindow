@@ -1,0 +1,57 @@
+diff --git a/packages/SystemUI/src/com/android/keyguard/KeyguardUpdateMonitor.java b/packages/SystemUI/src/com/android/keyguard/KeyguardUpdateMonitor.java
+--- a/packages/SystemUI/src/com/android/keyguard/KeyguardUpdateMonitor.java
++++ b/packages/SystemUI/src/com/android/keyguard/KeyguardUpdateMonitor.java
+@@ -2074,8 +2074,10 @@
+      * Updates callbacks when strong auth requirements change.
+      */
+     public class StrongAuthTracker extends LockPatternUtils.StrongAuthTracker {
+-        public StrongAuthTracker(Context context) {
+-            super(context);
++        public StrongAuthTracker(Context context, Looper looper) {
++            // Per-display components can be created on an executor thread without a Looper.
++            // Strong-auth callbacks belong on the injected main thread, not the creating thread.
++            super(context, looper);
+         }
+ 
+         public boolean isUnlockingWithBiometricAllowed(boolean isStrongBiometric) {
+@@ -2273,7 +2275,7 @@
+         mUserTracker = userTracker;
+         mTelephonyListenerManager = telephonyListenerManager;
+         mDeviceProvisioned = isDeviceProvisionedInSettingsDb();
+-        mStrongAuthTracker = new StrongAuthTracker(context);
++        mStrongAuthTracker = new StrongAuthTracker(context, mainLooper);
+         mBackgroundExecutor = backgroundExecutor;
+         mMainExecutor = mainExecutor;
+         mBroadcastDispatcher = broadcastDispatcher;
+diff --git a/packages/SystemUI/src/com/android/systemui/display/data/repository/DisplayComponentRepository.kt b/packages/SystemUI/src/com/android/systemui/display/data/repository/DisplayComponentRepository.kt
+--- a/packages/SystemUI/src/com/android/systemui/display/data/repository/DisplayComponentRepository.kt
++++ b/packages/SystemUI/src/com/android/systemui/display/data/repository/DisplayComponentRepository.kt
+@@ -24,12 +24,14 @@
+ import com.android.app.tracing.ListenersTracing.forEachTraced
+ import com.android.app.tracing.traceSection
+ import com.android.systemui.dagger.SysUISingleton
++import com.android.systemui.dagger.qualifiers.Main
+ import com.android.systemui.display.dagger.SystemUIDisplaySubcomponent
+ import com.android.systemui.display.flags.DisplayComponentRepositoryFlag.isEagerInitializationEnabled
+ import com.android.systemui.display.shared.DisplayNotFoundException
+ import dagger.Module
+ import dagger.Provides
+ import javax.inject.Inject
++import kotlin.coroutines.CoroutineContext
+ import kotlinx.coroutines.cancel
+ 
+ @SysUISingleton
+@@ -90,11 +92,13 @@
+     fun provideDisplayComponentRepository(
+         repositoryFactory: PerDisplayInstanceRepositoryImpl.Factory<SystemUIDisplaySubcomponent>,
+         instanceProvider: DisplayComponentInstanceProvider,
++        @Main lifecycleContext: CoroutineContext,
+     ): PerDisplayRepository<SystemUIDisplaySubcomponent> {
+         return repositoryFactory.create(
+             debugName = "DisplayComponentInstanceProvider",
+             instanceProvider,
+             createInstanceEagerly = isEagerInitializationEnabled(),
++            lifecycleContext = lifecycleContext,
+         )
+     }
+ }

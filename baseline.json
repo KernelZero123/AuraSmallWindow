@@ -1,0 +1,31 @@
+{
+  "android": "16",
+  "lineage_branch": "23.2 / trunk_staging",
+  "export_date": "2026-10-12",
+  "repositories": {
+    "frameworks/base": {
+      "commit": "c8e9a4a21efb16c923371a740b9c1c755d17ebb2",
+      "remotes": {
+        "github": "https://github.com/LineageOS/android_frameworks_base"
+      }
+    },
+    "frameworks/native": {
+      "commit": "9568531f9be7ae65f260699811f32ec4e461de6e",
+      "remotes": {
+        "github": "https://github.com/LineageOS/android_frameworks_native"
+      }
+    },
+    "frameworks/libs/systemui": {
+      "commit": "f33cffb935cf4f1a0a27bb3178aa1cf4621efc70",
+      "remotes": {
+        "github": "https://github.com/LineageOS/android_frameworks_libs_systemui"
+      }
+    },
+    "packages/apps/Launcher3": {
+      "commit": "ee25ab865b59ecda9c8fd6f901e80b48d7b789ea",
+      "remotes": {
+        "github": "https://github.com/LineageOS/android_packages_apps_Launcher3"
+      }
+    }
+  }
+}

@@ -1,0 +1,600 @@
+diff --git a/libs/gui/include/gui/WindowInfo.h b/libs/gui/include/gui/WindowInfo.h
+--- a/libs/gui/include/gui/WindowInfo.h
++++ b/libs/gui/include/gui/WindowInfo.h
+@@ -236,6 +236,10 @@
+      */
+     Region touchableRegion;
+ 
++    // Display-space visual coverage computed by SF from enforced rounded clips.
++    // Independent of client touchableRegion; empty retains rectangular occlusion.
++    Region touchOcclusionRegion;
++
+     TouchOcclusionMode touchOcclusionMode = TouchOcclusionMode::BLOCK_UNTRUSTED;
+     Pid ownerPid = Pid::INVALID;
+     Uid ownerUid = Uid::INVALID;
+diff --git a/libs/gui/WindowInfo.cpp b/libs/gui/WindowInfo.cpp
+--- a/libs/gui/WindowInfo.cpp
++++ b/libs/gui/WindowInfo.cpp
+@@ -138,6 +138,7 @@
+             info.contentSize == contentSize && info.surfaceInset == surfaceInset &&
+             info.globalScaleFactor == globalScaleFactor && info.transform == transform &&
+             info.touchableRegion.hasSameRects(touchableRegion) &&
++            info.touchOcclusionRegion.hasSameRects(touchOcclusionRegion) &&
+             info.touchOcclusionMode == touchOcclusionMode && info.ownerPid == ownerPid &&
+             info.ownerUid == ownerUid && info.packageName == packageName &&
+             info.inputConfig == inputConfig && info.displayId == displayId &&
+@@ -186,6 +187,7 @@
+         parcel->writeInt32(displayId.val()) ?:
+         applicationInfo.writeToParcel(parcel) ?:
+         parcel->write(touchableRegion) ?:
++        parcel->write(touchOcclusionRegion) ?:
+         parcel->writeBool(replaceTouchableRegionWithCrop) ?:
+         parcel->writeStrongBinder(touchableRegionCropHandle.promote()) ?:
+         parcel->writeStrongBinder(windowToken) ?:
+@@ -238,6 +240,7 @@
+         parcel->readInt32(&displayIdInt) ?:
+         applicationInfo.readFromParcel(parcel) ?:
+         parcel->read(touchableRegion) ?:
++        parcel->read(touchOcclusionRegion) ?:
+         parcel->readBool(&replaceTouchableRegionWithCrop) ?:
+         parcel->readNullableStrongBinder(&touchableRegionCropHandleSp) ?:
+         parcel->readNullableStrongBinder(&windowToken) ?:
+diff --git a/services/surfaceflinger/FrontEnd/LayerSnapshotBuilder.cpp b/services/surfaceflinger/FrontEnd/LayerSnapshotBuilder.cpp
+--- a/services/surfaceflinger/FrontEnd/LayerSnapshotBuilder.cpp
++++ b/services/surfaceflinger/FrontEnd/LayerSnapshotBuilder.cpp
+@@ -36,6 +36,7 @@
+ #include "Layer.h" // eFrameRateSelectionPriority constants
+ #include "LayerLog.h"
+ #include "LayerSnapshotBuilder.h"
++#include "RoundedTouchOcclusion.h"
+ #include "TimeStats/TimeStats.h"
+ #include "Tracing/TransactionTracing.h"
+ 
+@@ -176,13 +177,34 @@
+ }
+ 
+ void fillInputFrameInfo(gui::WindowInfo& info, const ui::Transform& screenToDisplay,
+-                        const LayerSnapshot& snapshot) {
++                        const LayerSnapshot& snapshot, bool useRoundedClip) {
+     auto [inputBounds, inputBoundsValid] = getInputBounds(snapshot, /*fillParentBounds=*/false);
+     if (!inputBoundsValid) {
+         info.touchableRegion.clear();
+     }
+ 
+     info.frame = getInputBoundsInDisplaySpace(snapshot, inputBounds, screenToDisplay);
++
++    // Use the same local geometry transform as composition, not the buffer input transform.
++    // Never infer visual transparency from an application-defined input region.
++    info.touchOcclusionRegion.clear();
++    const ui::Transform visualToDisplay = screenToDisplay * snapshot.geomLayerTransform;
++    const auto applyClip = [&](const RoundedCornerState& clip) {
++        Region local = roundedTouchOcclusion(clip.cropRect, clip.radii);
++        if (local.isEmpty()) return;
++        Region display = projectTouchOcclusion(local, visualToDisplay);
++        display.andSelf(info.frame);
++        if (info.touchOcclusionRegion.isEmpty()) {
++            info.touchOcclusionRegion = display;
++        } else {
++            info.touchOcclusionRegion.andSelf(display);
++        }
++    };
++    if (useRoundedClip) applyClip(snapshot.roundedCorner);
++    // Composition may additionally enforce an inherited parent clip.
++    if (useRoundedClip && snapshot.parentRoundedCorner.hasRequestedRadius()) {
++        applyClip(snapshot.parentRoundedCorner);
++    }
+ 
+     ui::Transform inputToLayer;
+     inputToLayer.set(inputBounds.left, inputBounds.top);
+@@ -195,6 +217,9 @@
+     // The touchable region is specified in the input coordinate space. Change it to display space.
+     info.touchableRegion =
+             transformTouchableRegionSafely(inputToDisplay, info.touchableRegion, snapshot.name);
++    if (!info.touchOcclusionRegion.isEmpty()) {
++        info.touchableRegion.andSelf(info.touchOcclusionRegion);
++    }
+ }
+ 
+ void handleDropInputMode(LayerSnapshot& snapshot, const LayerSnapshot& parentSnapshot) {
+@@ -1330,7 +1355,11 @@
+     if (!requested.hasInputInfo()) {
+         snapshot.inputInfo.inputConfig |= InputConfig::NO_INPUT_CHANNEL;
+     }
+-    fillInputFrameInfo(snapshot.inputInfo, displayInfo.transform, snapshot);
++    // HWC may render protected content without rounded clipping when the render engine cannot
++    // composite protected buffers. Retain rectangular occlusion, including any cached parent
++    // round state, rather than claiming transparent corners which may actually be opaque.
++    fillInputFrameInfo(snapshot.inputInfo, displayInfo.transform, snapshot,
++                      !args.skipRoundCornersWhenProtected || !requested.isProtected());
+ 
+     if (noValidDisplay) {
+         // Do not let the window receive touches if it is not associated with a valid display
+@@ -1357,6 +1386,9 @@
+         Rect inputBoundsInDisplaySpace =
+                 getInputBoundsInDisplaySpace(snapshot, inputBounds, displayInfo.transform);
+         snapshot.inputInfo.touchableRegion = Region(inputBoundsInDisplaySpace);
++        if (!snapshot.inputInfo.touchOcclusionRegion.isEmpty()) {
++            snapshot.inputInfo.touchableRegion.andSelf(snapshot.inputInfo.touchOcclusionRegion);
++        }
+     }
+ 
+     // Inherit the trusted state from the parent hierarchy, but don't clobber the trusted state
+@@ -1535,6 +1567,14 @@
+                     displayInfo.transform.transform(Rect{clonedRootSnapshot->transformedBounds});
+             snapshot->inputInfo.touchableRegion =
+                     snapshot->inputInfo.touchableRegion.intersect(rect);
++            if (!snapshot->inputInfo.touchOcclusionRegion.isEmpty()) {
++                snapshot->inputInfo.touchOcclusionRegion.andSelf(rect);
++            }
++        }
++        // Crop replacement must not reintroduce the transparent rendered corners. This also
++        // follows live surface-scale previews before WM commits its final TaskInfo geometry.
++        if (!snapshot->inputInfo.touchOcclusionRegion.isEmpty()) {
++            snapshot->inputInfo.touchableRegion.andSelf(snapshot->inputInfo.touchOcclusionRegion);
+         }
+     }
+ }
+diff --git a/services/surfaceflinger/FrontEnd/RoundedTouchOcclusion.h b/services/surfaceflinger/FrontEnd/RoundedTouchOcclusion.h
+new file mode 100644
+--- /dev/null
++++ b/services/surfaceflinger/FrontEnd/RoundedTouchOcclusion.h
+@@ -0,0 +1,143 @@
++/*
++ * Copyright 2026 The Android Open Source Project
++ * SPDX-License-Identifier: Apache-2.0
++ */
++#pragma once
++
++#include <algorithm>
++#include <cmath>
++#include <vector>
++#include <gui/CornerRadii.h>
++#include <ui/FloatRect.h>
++#include <ui/Region.h>
++#include <ui/Transform.h>
++
++namespace android::surfaceflinger::frontend {
++
++// Boolean-union of every new row with the complete accumulated region is quadratic.
++// SF also computes this mask for the rounded app leash during an ordinary home animation.
++// Build already sorted, disjoint scan bands directly, with an accurate bounds sentinel.
++inline Region touchOcclusionFromBands(const std::vector<Rect>& bands) {
++    if (bands.empty()) return {};
++    if (bands.size() == 1) return Region(bands.front());
++    Rect bounds = bands.front();
++    for (const Rect& band : bands) {
++        bounds.left = std::min(bounds.left, band.left);
++        bounds.right = std::max(bounds.right, band.right);
++        bounds.top = std::min(bounds.top, band.top);
++        bounds.bottom = std::max(bounds.bottom, band.bottom);
++    }
++    Region result(bounds);
++    for (const Rect& band : bands) {
++        result.addRectUnchecked(band.left, band.top, band.right, band.bottom);
++    }
++    return result;
++}
++
++inline Region mergeTouchOcclusionBalanced(const std::vector<Rect>& rects,
++                                           size_t begin, size_t end) {
++    if (begin == end) return {};
++    if (end - begin == 1) return Region(rects[begin]);
++    const size_t middle = begin + (end - begin) / 2;
++    Region result = mergeTouchOcclusionBalanced(rects, begin, middle);
++    result.orSelf(mergeTouchOcclusionBalanced(rects, middle, end));
++    return result;
++}
++
++// Conservative pixel coverage of an SF-enforced clip, independent of client input regions.
++// Empty means no usable clip; the caller retains the ordinary rectangular occlusion frame.
++inline Region roundedTouchOcclusion(const FloatRect& crop, const gui::CornerRadii& radii) {
++    constexpr float kCoordinateLimit = 1000000.f;
++    if (radii.isEmpty() || !std::isfinite(crop.left) || !std::isfinite(crop.top) ||
++        !std::isfinite(crop.right) || !std::isfinite(crop.bottom) ||
++        std::abs(crop.left) > kCoordinateLimit || std::abs(crop.right) > kCoordinateLimit ||
++        std::abs(crop.top) > kCoordinateLimit || std::abs(crop.bottom) > kCoordinateLimit ||
++        crop.getWidth() <= 0.f || crop.getHeight() <= 0.f || crop.getHeight() > 8192.f) {
++        return {};
++    }
++    struct Corner { float x; float y; };
++    const auto corner = [&](float x, float y) {
++        return Corner{std::clamp(x, 0.f, crop.getWidth() / 2.f),
++                      std::clamp(y, 0.f, crop.getHeight() / 2.f)};
++    };
++    const float values[] = {radii.topLeft.x, radii.topLeft.y, radii.topRight.x,
++                           radii.topRight.y, radii.bottomLeft.x, radii.bottomLeft.y,
++                           radii.bottomRight.x, radii.bottomRight.y};
++    for (float value : values) {
++        if (!std::isfinite(value)) return {};
++    }
++    const auto tl = corner(radii.topLeft.x, radii.topLeft.y);
++    const auto tr = corner(radii.topRight.x, radii.topRight.y);
++    const auto bl = corner(radii.bottomLeft.x, radii.bottomLeft.y);
++    const auto br = corner(radii.bottomRight.x, radii.bottomRight.y);
++    // Region unions have a cost per corner row. Bound work for pathological client surfaces;
++    // the conservative rectangular fallback keeps the existing touch protection in that case.
++    if (std::max(tl.y, tr.y) + std::max(bl.y, br.y) > 1024.f) return {};
++    const int top = static_cast<int>(std::floor(crop.top));
++    const int bottom = static_cast<int>(std::ceil(crop.bottom));
++    const int middleTop = static_cast<int>(std::ceil(crop.top + std::max(tl.y, tr.y)));
++    const int middleBottom = static_cast<int>(std::floor(crop.bottom - std::max(bl.y, br.y)));
++    const auto inset = [](Corner c, float center, int y) {
++        if (c.x <= 0.f || c.y <= 0.f) return 0.f;
++        // Use the closest point in this pixel row, then round coverage outwards.
++        const float distance = std::abs(center - std::clamp(center, float(y), float(y + 1)));
++        const float ratio = std::clamp(distance / c.y, 0.f, 1.f);
++        return c.x * (1.f - std::sqrt(std::max(0.f, 1.f - ratio * ratio)));
++    };
++    std::vector<Rect> bands;
++    bands.reserve(static_cast<size_t>(std::ceil(std::max(tl.y, tr.y) +
++                                               std::max(bl.y, br.y))) + 3);
++    const auto append = [&](const Rect& band) {
++        if (!bands.empty() && bands.back().bottom == band.top &&
++            bands.back().left == band.left && bands.back().right == band.right) {
++            bands.back().bottom = band.bottom;
++        } else {
++            bands.push_back(band);
++        }
++    };
++    for (int y = top; y < bottom;) {
++        if (y >= middleTop && y < middleBottom) {
++            append(Rect(static_cast<int>(std::floor(crop.left)), y,
++                               static_cast<int>(std::ceil(crop.right)), middleBottom));
++            y = middleBottom;
++            continue;
++        }
++        const float leftInset = y + 1 <= crop.top + tl.y
++                ? inset(tl, crop.top + tl.y, y)
++                : y >= crop.bottom - bl.y ? inset(bl, crop.bottom - bl.y, y) : 0.f;
++        const float rightInset = y + 1 <= crop.top + tr.y
++                ? inset(tr, crop.top + tr.y, y)
++                : y >= crop.bottom - br.y ? inset(br, crop.bottom - br.y, y) : 0.f;
++        const int left = static_cast<int>(std::floor(crop.left + leftInset));
++        const int right = static_cast<int>(std::ceil(crop.right - rightInset));
++        if (left < right) append(Rect(left, y, right, y + 1));
++        ++y;
++    }
++    return touchOcclusionFromBands(bands);
++}
++
++// Round each transformed coverage rectangle outwards, including negative translations.
++// Nearest-pixel rounding of an input origin can omit a real opaque edge, which is unsuitable
++// for the independent visual-security mask. Invalid projection keeps rectangular protection.
++inline Region projectTouchOcclusion(const Region& local, const ui::Transform& transform) {
++    std::vector<Rect> projectedRects;
++    for (const Rect& rect : local) {
++        const FloatRect projected = transform.transform(
++                FloatRect(rect.left, rect.top, rect.right, rect.bottom));
++        const float values[] = {projected.left, projected.top, projected.right, projected.bottom};
++        for (float value : values) {
++            if (!std::isfinite(value) || std::abs(value) > 1000000000.f) return {};
++        }
++        const Rect coverage(static_cast<int>(std::floor(projected.left)),
++                            static_cast<int>(std::floor(projected.top)),
++                            static_cast<int>(std::ceil(projected.right)),
++                            static_cast<int>(std::ceil(projected.bottom)));
++        if (!coverage.isEmpty()) projectedRects.push_back(coverage);
++    }
++    // Fractional scaling can make neighbouring rows overlap; rotation can reorder them.
++    // Keep Region's canonical union semantics, but merge a balanced tree rather than
++    // repeatedly copying/normalizing every previously accumulated row.
++    return mergeTouchOcclusionBalanced(projectedRects, 0, projectedRects.size());
++}
++
++} // namespace android::surfaceflinger::frontend
+diff --git a/services/inputflinger/dispatcher/InputDispatcher.cpp b/services/inputflinger/dispatcher/InputDispatcher.cpp
+--- a/services/inputflinger/dispatcher/InputDispatcher.cpp
++++ b/services/inputflinger/dispatcher/InputDispatcher.cpp
+@@ -567,7 +567,11 @@
+     }
+     const auto frame = displayTransform.transform(windowInfo.frame);
+     const auto p = floor(displayTransform.transform(x, y));
+-    return p.x >= frame.left && p.x < frame.right && p.y >= frame.top && p.y < frame.bottom;
++    if (p.x < frame.left || p.x >= frame.right || p.y < frame.top || p.y >= frame.bottom) {
++        return false;
++    }
++    return windowInfo.touchOcclusionRegion.isEmpty() ||
++            displayTransform.transform(windowInfo.touchOcclusionRegion).contains(p.x, p.y);
+ }
+ 
+ bool isPointerFromStylus(const MotionEntry& entry, int32_t pointerIndex) {
+diff --git a/services/surfaceflinger/tests/aura/Android.bp b/services/surfaceflinger/tests/aura/Android.bp
+new file mode 100644
+--- /dev/null
++++ b/services/surfaceflinger/tests/aura/Android.bp
+@@ -0,0 +1,8 @@
++cc_test {
++    name: "aura_touch_occlusion_test",
++    srcs: ["RoundedTouchOcclusionTest.cpp"],
++    include_dirs: ["frameworks/native/services/surfaceflinger"],
++    shared_libs: ["libbinder", "libgui", "libui", "libutils"],
++    cflags: ["-Wall", "-Werror"],
++    test_suites: ["device-tests"],
++}
+diff --git a/services/surfaceflinger/tests/aura/RoundedTouchOcclusionTest.cpp b/services/surfaceflinger/tests/aura/RoundedTouchOcclusionTest.cpp
+new file mode 100644
+--- /dev/null
++++ b/services/surfaceflinger/tests/aura/RoundedTouchOcclusionTest.cpp
+@@ -0,0 +1,161 @@
++/* Copyright 2026 The Android Open Source Project
++ * SPDX-License-Identifier: Apache-2.0
++ */
++#include "FrontEnd/RoundedTouchOcclusion.h"
++#include "RoundedTouchOcclusionReference.h"
++#include <binder/Parcel.h>
++#include <gtest/gtest.h>
++#include <gui/WindowInfo.h>
++#include <ui/Transform.h>
++#include <limits>
++#include <chrono>
++
++namespace android::surfaceflinger::frontend {
++
++TEST(AuraTouchOcclusion, ScanBandUnionTiming) {
++    ui::Transform transform;
++    transform.set(.74f, 0.f, 0.f, .74f);
++    transform.set(93.25f, 116.27f);
++    const auto measure = [&](bool optimized) {
++        size_t checksum = 0;
++        const auto start = std::chrono::steady_clock::now();
++        for (int i = 0; i < 300; ++i) {
++            const gui::CornerRadii radii(48.f + (i % 90));
++            const FloatRect crop(0, 0, 720, 1600);
++            const Region local = optimized ? roundedTouchOcclusion(crop, radii)
++                                          : reference::roundedTouchOcclusion(crop, radii);
++            const Region projected = optimized ? projectTouchOcclusion(local, transform)
++                                               : reference::projectTouchOcclusion(local, transform);
++            size_t count;
++            projected.getArray(&count);
++            checksum += count;
++        }
++        return std::make_pair(std::chrono::duration_cast<std::chrono::microseconds>(
++                std::chrono::steady_clock::now() - start).count(), checksum);
++    };
++    const auto old = measure(false);
++    const auto now = measure(true);
++    EXPECT_EQ(old.second, now.second);
++    printf("300 rounded masks: reference=%lldus optimized=%lldus checksum=%zu\n",
++           static_cast<long long>(old.first), static_cast<long long>(now.first), now.second);
++}
++
++TEST(AuraTouchOcclusion, OptimizedBandsAndProjectionPreserveOriginalCoverage) {
++    for (float radius : {1.f, 24.f, 48.f, 96.f, 240.f, 511.f}) {
++        for (const FloatRect crop : {FloatRect(0, 0, 720, 1280),
++                                     FloatRect(3.25f, -7.5f, 723.25f, 1592.5f),
++                                     FloatRect(-10.75f, 6.1f, 310.25f, 227.8f)}) {
++            for (bool asymmetric : {false, true}) {
++                gui::CornerRadii radii(radius);
++                if (asymmetric) {
++                    radii.topLeft.y *= .5f;
++                    radii.bottomLeft.x = 0.f;
++                    radii.bottomRight.y *= .75f;
++                }
++                const Region original = reference::roundedTouchOcclusion(crop, radii);
++                const Region optimized = roundedTouchOcclusion(crop, radii);
++                ASSERT_TRUE(original.hasSameRects(optimized));
++                ASSERT_EQ(original.getBounds(), optimized.getBounds());
++                for (float scale : {.266667f, .61f, .74f, .95f, 1.f, 1.3f}) {
++                    for (uint32_t rotation : {uint32_t(ui::Transform::ROT_0),
++                                               uint32_t(ui::Transform::ROT_90),
++                                               uint32_t(ui::Transform::ROT_180),
++                                               uint32_t(ui::Transform::ROT_270)}) {
++                        ui::Transform transform(rotation);
++                        ui::Transform resize;
++                        resize.set(scale, 0.f, 0.f, scale);
++                        resize.set(-93.25f, 116.27f);
++                        transform = resize * transform;
++                        const Region expected = reference::projectTouchOcclusion(original, transform);
++                        const Region actual = projectTouchOcclusion(optimized, transform);
++                        ASSERT_TRUE(expected.hasSameRects(actual));
++                        ASSERT_EQ(expected.getBounds(), actual.getBounds());
++                    }
++                }
++            }
++        }
++    }
++}
++
++TEST(AuraTouchOcclusion, ActualPhysicalCornersAcrossScalesAndOffsets) {
++    for (float scale : {.61f, .70f, .74f, .95f}) {
++        for (int x : {-100, 0, 93}) {
++            const Region local = roundedTouchOcclusion(FloatRect(0, 0, 720, 1280),
++                                                       gui::CornerRadii(48.f / scale));
++            ui::Transform transform;
++            transform.set(scale, 0.f, 0.f, scale);
++            transform.set(float(x), 520.f);
++            const Region visible = projectTouchOcclusion(local, transform);
++            EXPECT_FALSE(visible.contains(x + 8, 528));
++            EXPECT_TRUE(visible.contains(x + 24, 544));
++            EXPECT_TRUE(visible.contains(x + 100, 620));
++            EXPECT_FALSE(visible.contains(x - 5, 620));
++            EXPECT_TRUE(visible.contains(x, 620)); // Negative origins must retain opaque edges.
++        }
++    }
++}
++
++TEST(AuraTouchOcclusion, EllipticalCornersAndFractionalCropRemainConservative) {
++    gui::CornerRadii radii(0.f);
++    radii.topLeft.x = 60.f;
++    radii.topLeft.y = 40.f;
++    radii.bottomRight.x = 40.f;
++    radii.bottomRight.y = 60.f;
++    const FloatRect crop(3.25f, 7.5f, 303.25f, 407.5f);
++    const Region region = roundedTouchOcclusion(crop, radii);
++    EXPECT_FALSE(region.contains(5, 9));
++    EXPECT_TRUE(region.contains(302, 8)); // Square top-right corner.
++    EXPECT_FALSE(region.contains(301, 405));
++    EXPECT_TRUE(region.contains(4, 406)); // Square bottom-left corner.
++    // Every pixel intersecting the mathematical ellipse must remain occluding.
++    for (int y = 8; y < 48; ++y) {
++        for (int x = 4; x < 64; ++x) {
++            const float dx = (x + .5f - (crop.left + 60.f)) / 60.f;
++            const float dy = (y + .5f - (crop.top + 40.f)) / 40.f;
++            if (dx * dx + dy * dy <= 1.f) EXPECT_TRUE(region.contains(x, y));
++        }
++    }
++}
++
++TEST(AuraTouchOcclusion, InvalidAndUnenforcedClipKeepsRectangularFallback) {
++    EXPECT_TRUE(roundedTouchOcclusion(FloatRect(0, 0, 720, 1280),
++                                      gui::CornerRadii(0.f)).isEmpty());
++    EXPECT_TRUE(roundedTouchOcclusion(FloatRect(0, 0, 720, 100000),
++                                      gui::CornerRadii(48.f)).isEmpty());
++    EXPECT_TRUE(roundedTouchOcclusion(FloatRect(0, 0, 8192, 8192),
++                                      gui::CornerRadii(4096.f)).isEmpty());
++    EXPECT_TRUE(roundedTouchOcclusion(FloatRect(0, 0, 720, 1280),
++            gui::CornerRadii(std::numeric_limits<float>::quiet_NaN())).isEmpty());
++}
++
++TEST(AuraTouchOcclusion, ParcelPreservesIndependentCoverageAndFollowingWindow) {
++    gui::WindowInfo first, second;
++    first.name = "rounded";
++    first.alpha = 1.f;
++    first.frame = Rect(0, 0, 720, 1280);
++    first.touchableRegion = Region(Rect(100, 100, 200, 200));
++    first.touchOcclusionRegion = roundedTouchOcclusion(FloatRect(0, 0, 720, 1280),
++                                                       gui::CornerRadii(48.f));
++    first.replaceTouchableRegionWithCrop = true;
++    first.cloneLayerStackTransform = ui::Transform();
++    second.name = "plain";
++    second.alpha = 1.f;
++    second.frame = Rect(0, 0, 720, 1600);
++    Parcel parcel;
++    ASSERT_EQ(OK, first.writeToParcel(&parcel));
++    ASSERT_EQ(OK, second.writeToParcel(&parcel));
++    ASSERT_EQ(OK, parcel.writeInt32(0x12345678));
++    parcel.setDataPosition(0);
++    gui::WindowInfo actualFirst, actualSecond;
++    ASSERT_EQ(OK, actualFirst.readFromParcel(&parcel));
++    ASSERT_EQ(OK, actualSecond.readFromParcel(&parcel));
++    EXPECT_EQ(first, actualFirst);
++    EXPECT_EQ(second, actualSecond);
++    EXPECT_EQ(0x12345678, parcel.readInt32());
++    EXPECT_FALSE(actualFirst.touchableRegion.contains(350, 600));
++    EXPECT_TRUE(actualFirst.touchOcclusionRegion.contains(350, 600));
++    EXPECT_FALSE(actualFirst.touchOcclusionRegion.contains(8, 8));
++    EXPECT_TRUE(actualSecond.touchOcclusionRegion.isEmpty());
++}
++
++} // namespace android::surfaceflinger::frontend
+diff --git a/services/surfaceflinger/tests/aura/RoundedTouchOcclusionReference.h b/services/surfaceflinger/tests/aura/RoundedTouchOcclusionReference.h
+new file mode 100644
+--- /dev/null
++++ b/services/surfaceflinger/tests/aura/RoundedTouchOcclusionReference.h
+@@ -0,0 +1,99 @@
++/*
++ * Copyright 2026 The Android Open Source Project
++ * SPDX-License-Identifier: Apache-2.0
++ */
++#pragma once
++
++#include <algorithm>
++#include <cmath>
++#include <gui/CornerRadii.h>
++#include <ui/FloatRect.h>
++#include <ui/Region.h>
++#include <ui/Transform.h>
++
++namespace android::surfaceflinger::frontend::reference {
++
++// Conservative pixel coverage of an SF-enforced clip, independent of client input regions.
++// Empty means no usable clip; the caller retains the ordinary rectangular occlusion frame.
++inline Region roundedTouchOcclusion(const FloatRect& crop, const gui::CornerRadii& radii) {
++    constexpr float kCoordinateLimit = 1000000.f;
++    if (radii.isEmpty() || !std::isfinite(crop.left) || !std::isfinite(crop.top) ||
++        !std::isfinite(crop.right) || !std::isfinite(crop.bottom) ||
++        std::abs(crop.left) > kCoordinateLimit || std::abs(crop.right) > kCoordinateLimit ||
++        std::abs(crop.top) > kCoordinateLimit || std::abs(crop.bottom) > kCoordinateLimit ||
++        crop.getWidth() <= 0.f || crop.getHeight() <= 0.f || crop.getHeight() > 8192.f) {
++        return {};
++    }
++    struct Corner { float x; float y; };
++    const auto corner = [&](float x, float y) {
++        return Corner{std::clamp(x, 0.f, crop.getWidth() / 2.f),
++                      std::clamp(y, 0.f, crop.getHeight() / 2.f)};
++    };
++    const float values[] = {radii.topLeft.x, radii.topLeft.y, radii.topRight.x,
++                           radii.topRight.y, radii.bottomLeft.x, radii.bottomLeft.y,
++                           radii.bottomRight.x, radii.bottomRight.y};
++    for (float value : values) {
++        if (!std::isfinite(value)) return {};
++    }
++    const auto tl = corner(radii.topLeft.x, radii.topLeft.y);
++    const auto tr = corner(radii.topRight.x, radii.topRight.y);
++    const auto bl = corner(radii.bottomLeft.x, radii.bottomLeft.y);
++    const auto br = corner(radii.bottomRight.x, radii.bottomRight.y);
++    // Region unions have a cost per corner row. Bound work for pathological client surfaces;
++    // the conservative rectangular fallback keeps the existing touch protection in that case.
++    if (std::max(tl.y, tr.y) + std::max(bl.y, br.y) > 1024.f) return {};
++    const int top = static_cast<int>(std::floor(crop.top));
++    const int bottom = static_cast<int>(std::ceil(crop.bottom));
++    const int middleTop = static_cast<int>(std::ceil(crop.top + std::max(tl.y, tr.y)));
++    const int middleBottom = static_cast<int>(std::floor(crop.bottom - std::max(bl.y, br.y)));
++    const auto inset = [](Corner c, float center, int y) {
++        if (c.x <= 0.f || c.y <= 0.f) return 0.f;
++        // Use the closest point in this pixel row, then round coverage outwards.
++        const float distance = std::abs(center - std::clamp(center, float(y), float(y + 1)));
++        const float ratio = std::clamp(distance / c.y, 0.f, 1.f);
++        return c.x * (1.f - std::sqrt(std::max(0.f, 1.f - ratio * ratio)));
++    };
++    Region result;
++    for (int y = top; y < bottom;) {
++        if (y >= middleTop && y < middleBottom) {
++            result.orSelf(Rect(static_cast<int>(std::floor(crop.left)), y,
++                               static_cast<int>(std::ceil(crop.right)), middleBottom));
++            y = middleBottom;
++            continue;
++        }
++        const float leftInset = y + 1 <= crop.top + tl.y
++                ? inset(tl, crop.top + tl.y, y)
++                : y >= crop.bottom - bl.y ? inset(bl, crop.bottom - bl.y, y) : 0.f;
++        const float rightInset = y + 1 <= crop.top + tr.y
++                ? inset(tr, crop.top + tr.y, y)
++                : y >= crop.bottom - br.y ? inset(br, crop.bottom - br.y, y) : 0.f;
++        const int left = static_cast<int>(std::floor(crop.left + leftInset));
++        const int right = static_cast<int>(std::ceil(crop.right - rightInset));
++        if (left < right) result.orSelf(Rect(left, y, right, y + 1));
++        ++y;
++    }
++    return result;
++}
++
++// Round each transformed coverage rectangle outwards, including negative translations.
++// Nearest-pixel rounding of an input origin can omit a real opaque edge, which is unsuitable
++// for the independent visual-security mask. Invalid projection keeps rectangular protection.
++inline Region projectTouchOcclusion(const Region& local, const ui::Transform& transform) {
++    Region result;
++    for (const Rect& rect : local) {
++        const FloatRect projected = transform.transform(
++                FloatRect(rect.left, rect.top, rect.right, rect.bottom));
++        const float values[] = {projected.left, projected.top, projected.right, projected.bottom};
++        for (float value : values) {
++            if (!std::isfinite(value) || std::abs(value) > 1000000000.f) return {};
++        }
++        const Rect coverage(static_cast<int>(std::floor(projected.left)),
++                            static_cast<int>(std::floor(projected.top)),
++                            static_cast<int>(std::ceil(projected.right)),
++                            static_cast<int>(std::ceil(projected.bottom)));
++        if (!coverage.isEmpty()) result.orSelf(coverage);
++    }
++    return result;
++}
++
++} // namespace android::surfaceflinger::frontend
+diff --git a/services/surfaceflinger/FrontEnd/RequestedLayerState.cpp b/services/surfaceflinger/FrontEnd/RequestedLayerState.cpp
+--- a/services/surfaceflinger/FrontEnd/RequestedLayerState.cpp
++++ b/services/surfaceflinger/FrontEnd/RequestedLayerState.cpp
+@@ -199,6 +199,13 @@
+             const uint64_t usageFlags = hasBuffer ? externalTexture->getUsage() : 0;
+             if (oldUsageFlags != usageFlags) {
+                 changes |= RequestedLayerState::Changes::BufferUsageFlags;
++                if ((oldUsageFlags ^ usageFlags) & GRALLOC_USAGE_PROTECTED) {
++                    // Protected buffers can disable SF-enforced rounded clipping. Recompute
++                    // visual touch coverage and inherited clips in the same published frame.
++                    changes |= RequestedLayerState::Changes::Geometry |
++                            RequestedLayerState::Changes::Input |
++                            RequestedLayerState::Changes::AffectsChildren;
++                }
+             }
+         }
+ 

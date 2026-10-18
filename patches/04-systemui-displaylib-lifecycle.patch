@@ -1,0 +1,50 @@
+diff --git a/displaylib/src/com/android/app/displaylib/PerDisplayRepository.kt b/displaylib/src/com/android/app/displaylib/PerDisplayRepository.kt
+--- a/displaylib/src/com/android/app/displaylib/PerDisplayRepository.kt
++++ b/displaylib/src/com/android/app/displaylib/PerDisplayRepository.kt
+@@ -28,11 +28,13 @@
+ import java.util.concurrent.ConcurrentHashMap
+ import java.util.function.Consumer
+ import javax.inject.Qualifier
++import kotlin.coroutines.CoroutineContext
+ import kotlinx.coroutines.CoroutineScope
+ import kotlinx.coroutines.flow.SharingStarted
+ import kotlinx.coroutines.flow.StateFlow
+ import kotlinx.coroutines.flow.collectLatest
+ import kotlinx.coroutines.flow.combine
++import kotlinx.coroutines.yield
+ 
+ /**
+  * Used to create instances of type `T` for a specific display.
+@@ -181,6 +183,7 @@
+     private val displayRepository: DisplayRepository,
+     private val initCallback: PerDisplayRepository.InitCallback,
+     @Assisted private val createInstanceEagerly: Boolean = false,
++    @Assisted private val lifecycleContext: CoroutineContext? = null,
+ ) : PerDisplayRepository<T> {
+ 
+     private val perDisplayInstances = ConcurrentHashMap<Int, T?>()
+@@ -207,7 +210,15 @@
+             )
+ 
+     init {
+-        bgApplicationScope.launch("$debugName#start") { start() }
++        val lifecycleScope =
++            if (lifecycleContext == null) bgApplicationScope
++            else CoroutineScope(bgApplicationScope.coroutineContext + lifecycleContext)
++        lifecycleScope.launch("$debugName#start") {
++            // UI lifecycle providers must not initialize in a background collector. Defer
++            // even an immediate dispatcher so setup cannot reenter its Dagger factory.
++            if (lifecycleContext != null) yield()
++            start()
++        }
+     }
+ 
+     private suspend fun start() {
+@@ -297,6 +308,7 @@
+             instanceProvider: PerDisplayInstanceProvider<T>,
+             overrideLifecycleManager: DisplayInstanceLifecycleManager? = null,
+             createInstanceEagerly: Boolean = false,
++            lifecycleContext: CoroutineContext? = null,
+         ): PerDisplayInstanceRepositoryImpl<T>
+     }
+ 

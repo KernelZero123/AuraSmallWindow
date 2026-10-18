@@ -1,0 +1,13 @@
+Aura small window gesture/resize probe (pure JDK)
+--- protocol objects
+PASS ProtocolTests assertions=67
+--- bottom bar gestures
+PASS BottomBarGestureTests assertions=199
+--- thresholds, speed and cancellation
+PASS SpeedAndSpeedThresholdTests assertions=246
+--- resize geometry
+PASS ResizeGeometryTests assertions=823
+--- resize boundaries and degradation
+     grid samples: available=420 degraded=380
+PASS ResizeBoundaryTests assertions=6302
+ALL PASS assertions=6302

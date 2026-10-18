@@ -1,0 +1,37 @@
+[
+  {
+    "repository": "frameworks/base",
+    "patch": "patches/01-frameworks-base-small-window.patch",
+    "optional": false
+  },
+  {
+    "repository": "frameworks/native",
+    "patch": "patches/02-frameworks-native-input.patch",
+    "optional": false
+  },
+  {
+    "repository": "frameworks/base",
+    "patch": "patches/03-frameworks-base-display-lifecycle.patch",
+    "optional": false
+  },
+  {
+    "repository": "frameworks/libs/systemui",
+    "patch": "patches/04-systemui-displaylib-lifecycle.patch",
+    "optional": false
+  },
+  {
+    "repository": "packages/apps/Launcher3",
+    "patch": "patches/05-launcher3-small-window.patch",
+    "optional": false
+  },
+  {
+    "repository": "frameworks/base",
+    "patch": "patches/06-systemui-sidebar.patch",
+    "optional": false
+  },
+  {
+    "repository": "packages/apps/Launcher3",
+    "patch": "patches/07-optional-island-home-hook.patch",
+    "optional": true
+  }
+]
