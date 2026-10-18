@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="aura_sidebar_title">应用侧边栏</string>
+    <string name="aura_sidebar_empty">在下方添加常用应用</string>
+    <string name="aura_sidebar_edit">编辑应用</string>
+    <string name="aura_sidebar_choose">选择侧边栏应用</string>
+    <string name="aura_sidebar_search">搜索应用</string>
+    <string name="aura_sidebar_loading">正在加载应用…</string>
+    <string name="aura_sidebar_cancel">取消</string>
+    <string name="aura_sidebar_save">保存</string>
+    <string name="aura_sidebar_limit">最多添加 12 个应用</string>
+    <string name="aura_sidebar_launch_failed">无法以小窗打开此应用</string>
+</resources>

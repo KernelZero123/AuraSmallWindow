@@ -1,0 +1,471 @@
+/* SPDX-License-Identifier: Apache-2.0 */
+package com.android.systemui.navigationbar.gestural;
+
+import android.app.ActivityOptions;
+import android.app.ActivityTaskManager;
+import android.app.KeyguardManager;
+import android.app.WindowConfiguration;
+import android.content.BroadcastReceiver;
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.pm.ResolveInfo;
+import android.content.res.Configuration;
+import android.graphics.Color;
+import android.graphics.Insets;
+import android.graphics.PixelFormat;
+import android.graphics.Rect;
+import android.graphics.drawable.GradientDrawable;
+import android.os.Handler;
+import android.os.SystemProperties;
+import android.os.UserHandle;
+import android.provider.Settings;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
+import android.view.Gravity;
+import android.view.KeyEvent;
+import android.view.View;
+import android.view.WindowInsets;
+import android.view.WindowManager;
+import android.view.WindowMetrics;
+import android.window.WindowContainerTransaction;
+import android.window.WindowOrganizer;
+import android.widget.CheckBox;
+import android.widget.EditText;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ScrollView;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.android.systemui.res.R;
+import com.android.systemui.settings.UserTracker;
+
+import java.text.Collator;
+import java.util.ArrayList;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Locale;
+import java.util.Set;
+import java.util.concurrent.Executor;
+
+/** A transient, user-owned launch rail. No service or input monitor survives dismissal. */
+final class AuraSmallWindowSidebar {
+    private static final String TAG = "AuraSmallWindowSidebar";
+    private static final String SETTING = "aura_small_window_sidebar_apps";
+    private static final int MAX_APPS = 12;
+    private final Context mContext;
+    private final UserTracker mUsers;
+    private final Handler mHandler;
+    private final Executor mBackground;
+    private final WindowManager mWindowManager;
+    private FrameLayout mRoot;
+    private LinearLayout mPanel;
+    private int mGeneration, mUserId;
+    private Context mUserContext;
+    private boolean mLeft, mRegistered;
+    private int mText, mSurface;
+    private final Set<String> mSelected = new LinkedHashSet<>();
+    private final BroadcastReceiver mCloseReceiver = new BroadcastReceiver() {
+        @Override public void onReceive(Context context, Intent intent) { dismiss(); }
+    };
+
+    AuraSmallWindowSidebar(Context context, UserTracker users, Handler handler,
+            Executor background) {
+        mContext = context;
+        mUsers = users;
+        mHandler = handler;
+        mBackground = background;
+        mWindowManager = context.getSystemService(WindowManager.class);
+    }
+
+    boolean isShowing() { return mRoot != null; }
+    private int dp(float value) {
+        return Math.round(value * mContext.getResources().getDisplayMetrics().density);
+    }
+    private boolean unlocked() {
+        return !mContext.getSystemService(KeyguardManager.class).isKeyguardLocked();
+    }
+
+    void show(boolean left) {
+        dismiss();
+        if (!unlocked()) return;
+        mLeft = left;
+        mUserId = mUsers.getUserId();
+        mUserContext = mContext.createContextAsUser(UserHandle.of(mUserId), 0);
+        mSelected.clear();
+        String saved = Settings.Secure.getStringForUser(mContext.getContentResolver(),
+                SETTING, mUserId);
+        if (saved != null) for (String item : saved.split("\n")) {
+            if (ComponentName.unflattenFromString(item) != null
+                    && mSelected.size() < MAX_APPS) mSelected.add(item);
+        }
+        boolean dark = (mContext.getResources().getConfiguration().uiMode
+                & Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES;
+        mText = dark ? Color.WHITE : Color.rgb(25, 29, 35);
+        mSurface = dark ? Color.rgb(34, 39, 47) : Color.rgb(246, 248, 252);
+        mRoot = new FrameLayout(mContext);
+        mRoot.setBackgroundColor(0x18000000);
+        mRoot.setFocusableInTouchMode(true);
+        mRoot.setOnClickListener(v -> dismiss());
+        mRoot.setOnKeyListener((v, code, event) -> {
+            if (code != KeyEvent.KEYCODE_BACK && code != KeyEvent.KEYCODE_ESCAPE) return false;
+            if (event.getAction() == KeyEvent.ACTION_UP) dismiss();
+            return true;
+        });
+        mRoot.setOnApplyWindowInsetsListener((view, insets) -> {
+            Insets bars = insets.getInsets(WindowInsets.Type.systemBars()
+                    | WindowInsets.Type.displayCutout());
+            view.setPadding(bars.left, bars.top + dp(8), bars.right, bars.bottom + dp(8));
+            return insets;
+        });
+        WindowManager.LayoutParams lp = new WindowManager.LayoutParams(
+                WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT,
+                WindowManager.LayoutParams.TYPE_NAVIGATION_BAR_PANEL,
+                WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN
+                        | WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM,
+                PixelFormat.TRANSLUCENT);
+        lp.setTitle(TAG);
+        lp.setFitInsetsTypes(0);
+        lp.setTrustedOverlay();
+        lp.privateFlags |= WindowManager.LayoutParams.SYSTEM_FLAG_SHOW_FOR_ALL_USERS;
+        lp.windowAnimations = 0;
+        try {
+            mWindowManager.addView(mRoot, lp);
+            mRoot.requestFocus();
+            mContext.registerReceiver(mCloseReceiver, new IntentFilter(Intent.ACTION_SCREEN_OFF),
+                    null, mHandler, Context.RECEIVER_NOT_EXPORTED);
+            mRegistered = true;
+            renderRail();
+        } catch (RuntimeException e) {
+            Log.w(TAG, "Cannot show sidebar", e);
+            dismiss();
+        }
+    }
+
+    void dismiss() {
+        ++mGeneration;
+        if (mRegistered) {
+            mContext.unregisterReceiver(mCloseReceiver);
+            mRegistered = false;
+        }
+        if (mRoot != null) {
+            mRoot.animate().cancel();
+            if (mRoot.isAttachedToWindow()) mWindowManager.removeViewImmediate(mRoot);
+            mRoot = null;
+            mPanel = null;
+        }
+    }
+
+    private LinearLayout panel(int width, boolean centered) {
+        mRoot.removeAllViews();
+        mPanel = new LinearLayout(mContext);
+        mPanel.setOrientation(LinearLayout.VERTICAL);
+        mPanel.setPadding(dp(8), dp(12), dp(8), dp(12));
+        GradientDrawable bg = new GradientDrawable();
+        bg.setColor(mSurface);
+        bg.setCornerRadius(dp(24));
+        mPanel.setBackground(bg);
+        mPanel.setElevation(dp(12));
+        mPanel.setOnClickListener(v -> { });
+        FrameLayout.LayoutParams frame = new FrameLayout.LayoutParams(dp(width),
+                FrameLayout.LayoutParams.WRAP_CONTENT,
+                centered ? Gravity.CENTER : Gravity.CENTER_VERTICAL
+                        | (mLeft ? Gravity.LEFT : Gravity.RIGHT));
+        frame.setMargins(dp(8), dp(8), dp(8), dp(8));
+        mRoot.addView(mPanel, frame);
+        return mPanel;
+    }
+
+    private TextView text(CharSequence label, int size) {
+        TextView view = new TextView(mContext);
+        view.setText(label);
+        view.setTextColor(mText);
+        view.setTextSize(size);
+        view.setGravity(Gravity.CENTER);
+        view.setPadding(dp(8), dp(8), dp(8), dp(8));
+        return view;
+    }
+    private TextView button(int label, Runnable action) {
+        TextView view = text(mContext.getText(label), 14);
+        view.setMinHeight(dp(48));
+        view.setBackgroundResource(android.R.drawable.list_selector_background);
+        view.setOnClickListener(v -> action.run());
+        return view;
+    }
+
+    private void renderRail() {
+        if (!isShowing()) return;
+        mContext.getSystemService(android.view.inputmethod.InputMethodManager.class)
+                .hideSoftInputFromWindow(mRoot.getWindowToken(), 0);
+        WindowManager.LayoutParams lp = (WindowManager.LayoutParams) mRoot.getLayoutParams();
+        lp.flags |= WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM;
+        mWindowManager.updateViewLayout(mRoot, lp);
+        final int generation = ++mGeneration;
+        LinearLayout panel = panel(92, false);
+        panel.addView(text(mContext.getText(R.string.aura_sidebar_title), 12));
+        final int maxRailHeight = mWindowManager.getCurrentWindowMetrics().getBounds().height()
+                * 3 / 5;
+        ScrollView scroll = new ScrollView(mContext) {
+            @Override protected void onMeasure(int widthSpec, int heightSpec) {
+                int limit = View.MeasureSpec.getMode(heightSpec) == View.MeasureSpec.UNSPECIFIED
+                        ? maxRailHeight : Math.min(maxRailHeight,
+                                View.MeasureSpec.getSize(heightSpec));
+                super.onMeasure(widthSpec, View.MeasureSpec.makeMeasureSpec(limit,
+                        View.MeasureSpec.AT_MOST));
+            }
+        };
+        scroll.setFillViewport(false);
+        LinearLayout apps = new LinearLayout(mContext);
+        apps.setOrientation(LinearLayout.VERTICAL);
+        scroll.addView(apps);
+        panel.addView(scroll, new LinearLayout.LayoutParams(-1, -2));
+        if (mSelected.isEmpty()) apps.addView(text(
+                mContext.getText(R.string.aura_sidebar_empty), 12));
+        panel.addView(button(R.string.aura_sidebar_edit, this::showPicker));
+        panel.setAlpha(0f);
+        panel.setTranslationX(dp(mLeft ? -24 : 24));
+        panel.animate().alpha(1f).translationX(0f).setDuration(180).start();
+        final Context user = mUserContext;
+        final List<String> selected = new ArrayList<>(mSelected);
+        load(() -> {
+            List<App> loaded = new ArrayList<>();
+            for (String value : selected) {
+                ComponentName component = ComponentName.unflattenFromString(value);
+                Intent intent = launcherIntent(component);
+                ResolveInfo info = user.getPackageManager().resolveActivity(intent, 0);
+                if (info != null && info.activityInfo.enabled) loaded.add(new App(info, user));
+            }
+            mHandler.post(() -> {
+                if (generation != mGeneration || !isShowing() || !unlocked()) return;
+                for (App app : loaded) {
+                    LinearLayout cell = new LinearLayout(mContext);
+                    cell.setOrientation(LinearLayout.VERTICAL);
+                    cell.setGravity(Gravity.CENTER);
+                    cell.setPadding(0, dp(5), 0, dp(5));
+                    ImageView icon = new ImageView(mContext);
+                    icon.setImageDrawable(app.icon);
+                    cell.addView(icon, new LinearLayout.LayoutParams(dp(36), dp(36)));
+                    TextView label = text(app.label, 11);
+                    label.setPadding(dp(2), dp(4), dp(2), dp(2));
+                    label.setMaxLines(2);
+                    label.setEllipsize(android.text.TextUtils.TruncateAt.END);
+                    cell.addView(label, new LinearLayout.LayoutParams(-1, -2));
+                    cell.setMinimumHeight(dp(72));
+                    cell.setContentDescription(app.label);
+                    cell.setBackgroundResource(android.R.drawable.list_selector_background);
+                    cell.setOnClickListener(v -> launch(app.component));
+                    cell.setOnLongClickListener(v -> {
+                        mSelected.remove(app.component.flattenToString());
+                        save();
+                        renderRail();
+                        return true;
+                    });
+                    apps.addView(cell, new LinearLayout.LayoutParams(-1, -2));
+                }
+            });
+        });
+    }
+
+    private void showPicker() {
+        if (!isShowing() || !unlocked()) { dismiss(); return; }
+        int generation = ++mGeneration;
+        int width = Math.min(328, (int) (mWindowManager.getCurrentWindowMetrics().getBounds()
+                .width() / mContext.getResources().getDisplayMetrics().density) - 32);
+        LinearLayout panel = panel(width, true);
+        panel.addView(text(mContext.getText(R.string.aura_sidebar_choose), 18));
+        EditText search = new EditText(mContext);
+        search.setSingleLine(true);
+        search.setTextColor(mText);
+        search.setHint(R.string.aura_sidebar_search);
+        search.setHintTextColor((mText & 0xffffff) | 0x99000000);
+        panel.addView(search, new LinearLayout.LayoutParams(-1, dp(48)));
+        // The picker can use IME; the launch rail itself never requests it.
+        WindowManager.LayoutParams lp = (WindowManager.LayoutParams) mRoot.getLayoutParams();
+        lp.flags &= ~WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM;
+        lp.softInputMode = WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE;
+        mWindowManager.updateViewLayout(mRoot, lp);
+        ScrollView scroll = new ScrollView(mContext);
+        LinearLayout rows = new LinearLayout(mContext);
+        rows.setOrientation(LinearLayout.VERTICAL);
+        rows.addView(text(mContext.getText(R.string.aura_sidebar_loading), 14));
+        scroll.addView(rows);
+        panel.addView(scroll, new LinearLayout.LayoutParams(-1,
+                Math.min(dp(360), mWindowManager.getCurrentWindowMetrics().getBounds().height() / 3)));
+        Set<String> draft = new LinkedHashSet<>(mSelected);
+        LinearLayout actions = new LinearLayout(mContext);
+        actions.addView(button(R.string.aura_sidebar_cancel, this::renderRail),
+                new LinearLayout.LayoutParams(0, -2, 1));
+        actions.addView(button(R.string.aura_sidebar_save, () -> {
+            mSelected.clear(); mSelected.addAll(draft); save(); renderRail();
+        }), new LinearLayout.LayoutParams(0, -2, 1));
+        panel.addView(actions);
+        Context user = mUserContext;
+        load(() -> {
+            List<App> apps = new ArrayList<>();
+            Intent intent = new Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_LAUNCHER);
+            Set<String> seen = new LinkedHashSet<>();
+            for (ResolveInfo info : user.getPackageManager().queryIntentActivities(intent, 0)) {
+                ComponentName component = new ComponentName(info.activityInfo.packageName,
+                        info.activityInfo.name);
+                if (info.activityInfo.enabled && seen.add(component.flattenToString())) {
+                    apps.add(new App(info, user));
+                }
+            }
+            Collator collator = Collator.getInstance();
+            apps.sort((a, b) -> collator.compare(a.label.toString(), b.label.toString()));
+            mHandler.post(() -> {
+                if (generation != mGeneration || !isShowing() || !unlocked()) return;
+                rows.removeAllViews();
+                Set<String> available = new LinkedHashSet<>();
+                for (App app : apps) available.add(app.component.flattenToString());
+                draft.retainAll(available);
+                for (App app : apps) {
+                    LinearLayout row = new LinearLayout(mContext);
+                    row.setGravity(Gravity.CENTER_VERTICAL);
+                    row.setPadding(dp(8), 0, dp(8), 0);
+                    ImageView icon = new ImageView(mContext);
+                    icon.setImageDrawable(app.icon);
+                    row.addView(icon, new LinearLayout.LayoutParams(dp(32), dp(32)));
+                    CheckBox box = new CheckBox(mContext);
+                    box.setText(app.label); box.setTextColor(mText);
+                    box.setChecked(draft.contains(app.component.flattenToString()));
+                    box.setOnCheckedChangeListener((view, checked) -> {
+                        String value = app.component.flattenToString();
+                        if (!checked) draft.remove(value);
+                        else if (draft.size() < MAX_APPS) draft.add(value);
+                        else {
+                            box.setChecked(false);
+                            Toast.makeText(mContext, R.string.aura_sidebar_limit,
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                    row.addView(box, new LinearLayout.LayoutParams(0, dp(52), 1));
+                    row.setTag(app.label.toString().toLowerCase(Locale.getDefault()));
+                    row.setOnClickListener(v -> box.toggle());
+                    rows.addView(row);
+                }
+                search.addTextChangedListener(new TextWatcher() {
+                    public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+                    public void onTextChanged(CharSequence s, int start, int before, int count) {
+                        String query = s.toString().trim().toLowerCase(Locale.getDefault());
+                        for (int i = 0; i < rows.getChildCount(); i++) {
+                            View row = rows.getChildAt(i);
+                            row.setVisibility(row.getTag().toString().contains(query)
+                                    ? View.VISIBLE : View.GONE);
+                        }
+                    }
+                    public void afterTextChanged(Editable value) { }
+                });
+            });
+        });
+    }
+
+    private void save() {
+        Settings.Secure.putStringForUser(mContext.getContentResolver(), SETTING,
+                String.join("\n", mSelected), mUserId);
+    }
+
+    private void load(Runnable work) {
+        mBackground.execute(() -> {
+            try { work.run(); }
+            catch (RuntimeException e) { Log.w(TAG, "Application list changed during load", e); }
+        });
+    }
+
+    private static Intent launcherIntent(ComponentName component) {
+        return new Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_LAUNCHER)
+                .setComponent(component).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+                        | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
+    }
+
+    private void launch(ComponentName component) {
+        if (!unlocked() || mUsers.getUserId() != mUserId) { dismiss(); return; }
+        final Context user = mUserContext;
+        final int userId = mUserId;
+        dismiss();
+        final int generation = mGeneration;
+        final java.util.concurrent.atomic.AtomicBoolean completed = new java.util.concurrent.atomic.AtomicBoolean();
+        final Runnable failed = () -> {
+            if (completed.compareAndSet(false, true) && generation == mGeneration && unlocked()) {
+                Toast.makeText(mContext, R.string.aura_sidebar_launch_failed, Toast.LENGTH_SHORT).show();
+            }
+        };
+        mHandler.postDelayed(failed, 4500);
+        mContext.sendOrderedBroadcastAsUser(new Intent("com.android.systemui.AURA_PREPARE_SMALL_WINDOW")
+                .setPackage("com.android.systemui").addFlags(Intent.FLAG_RECEIVER_FOREGROUND)
+                .putExtra("user_id", userId).putExtra("package", component.getPackageName()),
+                UserHandle.of(userId), null, new BroadcastReceiver() {
+                    @Override public void onReceive(Context context, Intent intent) {
+                        if (getResultCode() != 1) { failed.run(); return; }
+                        if (!completed.compareAndSet(false, true)) return;
+                        mHandler.removeCallbacks(failed);
+                        if (generation == mGeneration && unlocked() && mUsers.getUserId() == userId) {
+                            launchPrepared(component, user, userId);
+                        }
+                    }
+                }, mHandler, 0, null, null);
+    }
+
+    private void launchPrepared(ComponentName component, Context user, int userId) {
+        ActivityOptions options = ActivityOptions.makeBasic();
+        options.setLaunchDisplayId(0);
+        options.setLaunchWindowingMode(WindowConfiguration.WINDOWING_MODE_FREEFORM);
+        WindowMetrics metrics = mWindowManager.getMaximumWindowMetrics();
+        Rect screen = metrics.getBounds();
+        Insets bars = metrics.getWindowInsets().getInsetsIgnoringVisibility(
+                WindowInsets.Type.systemBars() | WindowInsets.Type.displayCutout());
+        int availableWidth = screen.width() - bars.left - bars.right;
+        int availableHeight = screen.height() - bars.top - bars.bottom;
+        // Use the normal portrait canvas independently of the host display rotation.
+        // WM rotates it for landscape apps and fits its uniform scale to the safe area.
+        int width = Math.min(Math.min(screen.width(), screen.height()), availableWidth);
+        int height = Math.min(Math.max(availableWidth, availableHeight),
+                Math.round(width * 16f / 9f));
+        float scale = Math.max(50, Math.min(90, SystemProperties.getInt(
+                "ro.aura.small_window_scale", 74))) / 100f;
+        int left = screen.left + bars.left + Math.round((availableWidth - width * scale) / 2f);
+        int top = screen.top + bars.top + dp(8);
+        options.setLaunchBounds(new Rect(left, top, left + width, top + height));
+        try {
+            for (var task : ActivityTaskManager.getInstance().getTasks(32)) {
+                if (task.displayId != 0 || task.userId != userId || task.topActivity == null
+                        || !component.getPackageName().equals(task.topActivity.getPackageName())
+                        || !task.isFreeform() || !task.auraSmallWindowMini) continue;
+                // Restore the existing app canvas via a Shell transition, preserving orientation.
+                Rect canvas = task.configuration.windowConfiguration.getBounds();
+                float restoredScale = Math.min(.95f, task.auraSmallWindowDecorScale);
+                if (!Float.isFinite(restoredScale) || restoredScale <= 0f) restoredScale = scale;
+                restoredScale = Math.min(restoredScale,
+                        Math.min((availableWidth - dp(16f)) / (float) canvas.width(),
+                                (availableHeight - dp(16f)) / (float) canvas.height()));
+                int x = screen.left + bars.left + Math.round(
+                        (availableWidth - canvas.width() * restoredScale) / 2f);
+                Rect restored = new Rect(x, top, x + canvas.width(), top + canvas.height());
+                new WindowOrganizer().startNewTransition(WindowManager.TRANSIT_CHANGE,
+                        new WindowContainerTransaction().setAuraSmallWindowGeometry(
+                                task.token, restored, restoredScale, false).reorder(task.token, true));
+                options.setLaunchBounds(restored);
+                break;
+            }
+            user.startActivity(launcherIntent(component), options.toBundle());
+        } catch (RuntimeException e) {
+            Log.w(TAG, "Small window launch failed: " + component, e);
+            Toast.makeText(mContext, R.string.aura_sidebar_launch_failed, Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private static final class App {
+        final ComponentName component;
+        final CharSequence label;
+        final android.graphics.drawable.Drawable icon;
+        App(ResolveInfo info, Context context) {
+            component = new ComponentName(info.activityInfo.packageName, info.activityInfo.name);
+            label = info.loadLabel(context.getPackageManager());
+            icon = info.loadIcon(context.getPackageManager());
+        }
+    }
+}

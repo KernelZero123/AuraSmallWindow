@@ -1,0 +1,8 @@
+cc_test {
+    name: "aura_touch_occlusion_test",
+    srcs: ["RoundedTouchOcclusionTest.cpp"],
+    include_dirs: ["frameworks/native/services/surfaceflinger"],
+    shared_libs: ["libbinder", "libgui", "libui", "libutils"],
+    cflags: ["-Wall", "-Werror"],
+    test_suites: ["device-tests"],
+}

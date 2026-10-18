@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Icon tint for Aura small-window caption buttons on light backgrounds. Dim on press;
+     constant across focus states (readability must not depend on task focus). -->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_pressed="true" android:color="#8C1A1C1E"/>
+    <item android:color="#DE1A1C1E"/>
+</selector>

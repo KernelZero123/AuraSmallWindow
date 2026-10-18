@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+ ~ Copyright (C) 2026 Aura_A1 Project
+ ~
+ ~ Licensed under the Apache License, Version 2.0 (the "License");
+ ~ you may not use this file except in compliance with the License.
+ ~ You may obtain a copy of the License at
+ ~
+ ~      http://www.apache.org/licenses/LICENSE-2.0
+ -->
+<resources>
+    <string name="aura_small_window_fullscreen_button_text">全屏</string>
+    <string name="aura_small_window_restore_button_text">退出全屏</string>
+    <string name="aura_small_window_close_button_text">关闭</string>
+    <string name="aura_small_window_more_button_text">更多</string>
+    <string name="aura_small_window_menu_back_text">返回</string>
+    <string name="aura_small_window_menu_title_text">更多选项</string>
+    <string name="aura_small_window_bottom_bar_description">小窗控制条</string>
+    <string name="aura_small_window_bottom_bar_close_action">关闭小窗</string>
+    <string name="aura_small_window_bottom_bar_fullscreen_action">全屏</string>
+</resources>

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+ ~ Copyright (C) 2026 Aura_A1 Project
+ ~
+ ~ Licensed under the Apache License, Version 2.0 (the "License");
+ ~ you may not use this file except in compliance with the License.
+ ~ You may obtain a copy of the License at
+ ~
+ ~      http://www.apache.org/licenses/LICENSE-2.0
+ ~
+ ~ Unless required by applicable law or agreed to in writing, software
+ ~ distributed under the License is distributed on an "AS IS" BASIS,
+ ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ ~ See the License for the specific language governing permissions and
+ ~ limitations under the License.
+ -->
+<!-- Aura phone small-window caption, centered-dots revision: a single 44dp "more"
+     hit target horizontally centered at the top (ColorOS reference screen.png); no app
+     icon, no app title, no right-aligned more. The app keeps its own toolbar below -
+     this bar is decoration only. The rest of the caption stays drag space, and the two
+     flanking Spaces keep the centered button from widening a click host across the bar.
+     The former back/maximize/close buttons remain GONE action anchors so the menu keeps
+     routing through the unchanged CaptionWindowDecorViewModel listeners into
+     TaskOperations. Sizes here are layout-preview defaults; CaptionWindowDecoration
+     applies 1/scale-compensated physical sizes at runtime. -->
+<com.android.wm.shell.windowdecor.WindowDecorLinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/caption"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="end"
+    android:background="@drawable/aura_small_window_caption_background">
+    <Space
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:elevation="2dp"/>
+    <ImageButton
+        android:id="@+id/aura_more_button"
+        android:layout_width="44dp"
+        android:layout_height="28dp"
+        android:layout_gravity="center_vertical"
+        android:src="@drawable/aura_small_window_button_more"
+        android:scaleType="fitCenter"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
+        android:background="@null"
+        android:contentDescription="@string/aura_small_window_more_button_text"/>
+    <Space
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:elevation="2dp"/>
+    <!-- Action anchors for the more menu: invisible and zero-sized, but they still
+         receive setOnClickListener and performClick() so the menu reuses the existing
+         TaskOperations paths without touching CaptionWindowDecorViewModel. -->
+    <View
+        android:id="@+id/back_button"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:visibility="gone"/>
+    <View
+        android:id="@+id/maximize_window"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:visibility="gone"/>
+    <View
+        android:id="@+id/close_window"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:visibility="gone"/>
+</com.android.wm.shell.windowdecor.WindowDecorLinearLayout>

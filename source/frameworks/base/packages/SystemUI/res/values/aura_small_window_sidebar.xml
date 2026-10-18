@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="aura_sidebar_title">Small windows</string>
+    <string name="aura_sidebar_empty">Add your apps below</string>
+    <string name="aura_sidebar_edit">Edit apps</string>
+    <string name="aura_sidebar_choose">Choose sidebar apps</string>
+    <string name="aura_sidebar_search">Search apps</string>
+    <string name="aura_sidebar_loading">Loading apps…</string>
+    <string name="aura_sidebar_cancel">Cancel</string>
+    <string name="aura_sidebar_save">Save</string>
+    <string name="aura_sidebar_limit">You can add up to 12 apps</string>
+    <string name="aura_sidebar_launch_failed">Unable to open this app in a small window</string>
+</resources>

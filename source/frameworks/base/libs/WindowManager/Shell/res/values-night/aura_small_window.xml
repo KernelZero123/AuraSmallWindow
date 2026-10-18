@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+ ~ Copyright (C) 2026 Aura_A1 Project
+ ~
+ ~ Licensed under the Apache License, Version 2.0 (the "License");
+ ~ you may not use this file except in compliance with the License.
+ ~ You may obtain a copy of the License at
+ ~
+ ~      http://www.apache.org/licenses/LICENSE-2.0
+ -->
+<resources>
+    <color name="aura_small_window_caption_background">#FF2B2B2D</color>
+    <color name="aura_small_window_handle_normal">#8FFFFFFF</color>
+    <color name="aura_small_window_handle_pressed">#FFFFFFF2</color>
+    <color name="aura_small_window_handle_preview">#FFFFFFF2</color>
+</resources>

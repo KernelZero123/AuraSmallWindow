@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+ ~ Copyright (C) 2026 Aura_A1 Project
+ ~
+ ~ Licensed under the Apache License, Version 2.0 (the "License");
+ ~ you may not use this file except in compliance with the License.
+ ~ You may obtain a copy of the License at
+ ~
+ ~      http://www.apache.org/licenses/LICENSE-2.0
+ -->
+<resources>
+    <!-- Kept compilable after the centered-dots revision removed these views from the
+         caption layout: CaptionWindowDecoration still findViewById-null-checks them so
+         layouts from the icon/title revision keep working. Declaring the ids here (no
+         view uses them in the centered layout) preserves the R.id entries. -->
+    <item name="aura_app_icon" type="id" />
+    <item name="aura_app_title" type="id" />
+
+    <!-- Caption fallback shown when the app does not provide a usable opaque
+         statusBar color. Night variant lives in values-night. -->
+    <color name="aura_small_window_caption_background">#FFF2F2F2</color>
+
+    <!-- Icon tints live in res/color as pressed-state selectors (one per background
+         luminance) and are constant across focus states. -->
+
+    <!-- Bottom bar handle colors: normal / pressed / gesture-preview. Follow the system
+         day/night theme (night overrides in values-night) for visibility over arbitrary
+         app content; initial values, not measured ColorOS values. -->
+    <color name="aura_small_window_handle_normal">#8F1A1C1E</color>
+    <color name="aura_small_window_handle_pressed">#CC1A1C1E</color>
+    <color name="aura_small_window_handle_preview">#CC1A1C1E</color>
+
+    <!-- Whole-window corner radius. Physical dp, applied by the server-side clip layer
+         (Codex); this value is an initial guess, NOT a measured ColorOS value. -->
+    <dimen name="aura_small_window_corner_radius">24dp</dimen>
+
+    <!-- Bottom bar geometry, physical dp. TOUCH height is the gesture area; the visible
+         handle itself is 40x4dp. Corner reserve keeps lower-left/right resize zones
+         exclusive: the bar never claims those 44dp edges. -->
+    <dimen name="aura_small_window_bottom_bar_handle_width">40dp</dimen>
+    <dimen name="aura_small_window_bottom_bar_handle_height">4dp</dimen>
+    <dimen name="aura_small_window_bottom_bar_touch_height">40dp</dimen>
+    <dimen name="aura_small_window_bottom_bar_corner_reserve">44dp</dimen>
+
+    <!-- Layout-preview defaults; CaptionWindowDecoration applies scale-compensated
+         physical sizes at runtime. -->
+    <style name="AuraSmallWindowCaptionButtonStyle">
+        <item name="android:layout_width">44dp</item>
+        <item name="android:layout_height">44dp</item>
+        <item name="android:layout_margin">4dp</item>
+        <item name="android:padding">12dp</item>
+    </style>
+
+    <string name="aura_small_window_fullscreen_button_text">Fullscreen</string>
+    <string name="aura_small_window_restore_button_text">Exit fullscreen</string>
+    <string name="aura_small_window_close_button_text">Close</string>
+    <string name="aura_small_window_more_button_text">More</string>
+    <string name="aura_small_window_menu_back_text">Back</string>
+    <string name="aura_small_window_menu_title_text">More options</string>
+    <string name="aura_small_window_bottom_bar_description">Small window control bar</string>
+    <string name="aura_small_window_bottom_bar_close_action">Close small window</string>
+    <string name="aura_small_window_bottom_bar_fullscreen_action">Fullscreen</string>
+    <item name="aura_small_window_action_close" type="id" />
+    <item name="aura_small_window_action_fullscreen" type="id" />
+</resources>
